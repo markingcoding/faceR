@@ -132,7 +132,7 @@ body {
   border-radius: 3px;
 }
 .bg-primary {
-  background-color: #149dcc !important;
+  background-color: #000e56 !important;
 }
 .bg-success {
   background-color: #f7ed4a !important;
@@ -148,8 +148,8 @@ body {
 }
 .btn-primary,
 .btn-primary:active {
-  background-color: #149dcc !important;
-  border-color: #149dcc !important;
+  background-color: #000e56 !important;
+  border-color: #000e56 !important;
   color: #ffffff !important;
 }
 .btn-primary:hover,
@@ -320,14 +320,14 @@ body {
 .btn-primary-outline.focus,
 .btn-primary-outline.active {
   color: #ffffff;
-  background-color: #149dcc;
-  border-color: #149dcc;
+  background-color: #000e56;
+  border-color: #000e56;
 }
 .btn-primary-outline.disabled,
 .btn-primary-outline:disabled {
   color: #ffffff !important;
-  background-color: #149dcc !important;
-  border-color: #149dcc !important;
+  background-color: #000e56 !important;
+  border-color: #000e56 !important;
 }
 .btn-secondary-outline,
 .btn-secondary-outline:active {
@@ -464,7 +464,7 @@ body {
   border-color: #ffffff;
 }
 .text-primary {
-  color: #149dcc !important;
+  color: #000e56 !important;
 }
 .text-secondary {
   color: #ff3366 !important;
@@ -547,8 +547,8 @@ a.text-black:focus {
   border-radius: 100px !important;
 }
 .mbr-gallery-filter li.active .btn {
-  background-color: #149dcc;
-  border-color: #149dcc;
+  background-color: #000e56;
+  border-color: #000e56;
   color: #ffffff;
 }
 .mbr-gallery-filter li.active .btn:focus {
@@ -565,7 +565,7 @@ a.text-black:focus {
 }
 a,
 a:hover {
-  color: #149dcc;
+  color: #000e56;
 }
 .mbr-plan-header.bg-primary .mbr-plan-subtitle,
 .mbr-plan-header.bg-primary .mbr-plan-price-desc {
@@ -690,7 +690,7 @@ blockquote {
   padding: 10px 0 10px 20px;
   font-size: 1.09rem;
   position: relative;
-  border-color: #149dcc;
+  border-color: #000e56;
   border-width: 3px;
 }
 ul,
@@ -779,7 +779,7 @@ pre {
   text-align: center;
   position: relative;
   border: 2px solid #c0a375;
-  border-color: #149dcc;
+  border-color: #000e56;
   color: #232323;
   cursor: pointer;
 }
@@ -790,7 +790,7 @@ pre {
 }
 .btn-social:hover {
   color: #fff;
-  background: #149dcc;
+  background: #000e56;
 }
 .btn-social + .btn {
   margin-left: .1rem;
@@ -798,11 +798,11 @@ pre {
 /* Footer */
 .mbr-footer-content li::before,
 .mbr-footer .mbr-contacts li::before {
-  background: #149dcc;
+  background: #000e56;
 }
 .mbr-footer-content li a:hover,
 .mbr-footer .mbr-contacts li a:hover {
-  color: #149dcc;
+  color: #000e56;
 }
 .footer3 input[type="email"],
 .footer4 input[type="email"] {
@@ -1384,12 +1384,12 @@ body {
 }
 .cid-qTkzRZLJNu .navbar {
   padding: .5rem 0;
-  background: #149dcc;
+  background: #000e56;
   transition: none;
   min-height: 77px;
 }
 .cid-qTkzRZLJNu .navbar-dropdown.bg-color.transparent.opened {
-  background: #149dcc;
+  background: #000e56;
 }
 .cid-qTkzRZLJNu a {
   font-style: normal;
@@ -1473,7 +1473,7 @@ body {
   padding-bottom: 0;
 }
 .cid-qTkzRZLJNu .dropdown .dropdown-menu {
-  background: #149dcc;
+  background: #000e56;
   display: none;
   position: absolute;
   min-width: 5rem;
@@ -2383,12 +2383,12 @@ body {
 }
 .cid-qTkzRZLJNu .navbar {
   padding: .5rem 0;
-  background: #149dcc;
+  background: #000e56;
   transition: none;
   min-height: 77px;
 }
 .cid-qTkzRZLJNu .navbar-dropdown.bg-color.transparent.opened {
-  background: #149dcc;
+  background: #000e56;
 }
 .cid-qTkzRZLJNu a {
   font-style: normal;
@@ -2472,7 +2472,7 @@ body {
   padding-bottom: 0;
 }
 .cid-qTkzRZLJNu .dropdown .dropdown-menu {
-  background: #149dcc;
+  background: #000e56;
   display: none;
   position: absolute;
   min-width: 5rem;
@@ -2771,8 +2771,8 @@ body {
   color: #c1c1c1 !important;
 }
 .cid-rjz56hmh4f {
-  padding-top: 90px;
-  padding-bottom: 90px;
+  padding-top: 190px;
+  padding-bottom: 285px;
   background-image: url("../../../assets/images/mbr-1920x1079.jpg");
 }
 .cid-rjz4Ry7mtu {
@@ -2820,7 +2820,7 @@ body {
 }
 .cid-rjL1fGCMhr .mbr-iconfont {
   font-size: 80px;
-  color: #149dcc;
+  color: #000e56;
 }
 .cid-rjQ7QTIvCn {
   padding-top: 90px;
@@ -2838,7 +2838,7 @@ body {
 }
 .cid-rjQ7QTIvCn .card-img span {
   font-size: 96px;
-  color: #149dcc;
+  color: #000e56;
 }
 .cid-rjz6Bx6NXt {
   padding-top: 90px;
