@@ -132,11 +132,11 @@
     </div>
 
 </section>
-
 <section class="cid-rjz4OoVovE" id="video3-9">
 
-
-
+    <div style="margin-top: -60px;margin-right: -60px;">
+        <input type="button" class="btn btn-warning btn-sm" id="musicControlBtn" onclick="startStopMusic();" value="Stop music"/>
+    </div>
     <figure class="mbr-figure align-center container">
         <!--<div class="video-block" style="width: 80%;">-->
             <!--<div><iframe class="mbr-embedded-video" src="https://www.youtube.com/embed/Pls_q2aQzHg?rel=0&amp;amp;showinfo=0&amp;autoplay=0&amp;loop=0" width="1280" height="720" frameborder="0" allowfullscreen></iframe></div>-->
@@ -146,7 +146,7 @@
                 <img src="assets/images/introduceFace.gif">
             </div>
         </div>
-        <audio src="assets/music/hoshi-ga-mau-uchuukuukan.mp3" id="bgm" loop autoplay></audio>
+        <audio src="assets/music/hoshi-ga-mau-uchuukuukan.mp3" id="bgm" controls loop autoplay hidden></audio>
     </figure>
 </section>
 
@@ -625,7 +625,6 @@
     </div>
 </section>
 
-
 <script src="assets/web/assets/jquery/jquery.min.js"></script>
 <script src="assets/popper/popper.min.js"></script>
 <script src="assets/tether/tether.min.js"></script>
@@ -638,5 +637,18 @@
 <script src="assets/dropdown/js/script.min.js"></script>
 <script src="assets/theme/js/script.js"></script>
 
+<script>
+    function startStopMusic() {
+        let audio = document.getElementById("bgm");
+        let control = document.getElementById("musicControlBtn");
+        if (audio.paused) {
+            audio.play();
+            control.value = "Stop Music";
+        } else {
+            audio.pause();
+            control.value = "Start Music";
+        }
+    }
+</script>
 </body>
 </html>
