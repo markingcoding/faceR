@@ -135,7 +135,7 @@
 <section class="cid-rjz4OoVovE" id="video3-9">
 
     <div style="margin-top: -60px;margin-right: -60px;">
-        <input type="button" class="btn btn-warning btn-sm" id="musicControlBtn" onclick="startStopMusic();" value="Stop music"/>
+        <input type="button" class="btn btn-warning btn-sm" id="musicControlBtn" onclick="startStopMusic();" value="🔇"/>
     </div>
     <figure class="mbr-figure align-center container">
         <!--<div class="video-block" style="width: 80%;">-->
@@ -638,17 +638,19 @@
 <script src="assets/theme/js/script.js"></script>
 
 <script>
-    function startStopMusic() {
-        let audio = document.getElementById("bgm");
-        let control = document.getElementById("musicControlBtn");
-        if (audio.paused) {
-            audio.play();
-            control.value = "Stop Music";
-        } else {
-            audio.pause();
-            control.value = "Start Music";
+    $(function() {
+        function startStopMusic() {
+            let audio = document.getElementById("bgm");
+            let control = document.getElementById("musicControlBtn");
+            if (audio.paused) {
+                audio.play();
+                control.value = "🔇";
+            } else {
+                audio.pause();
+                control.value = "🔊";
+            }
         }
-    }
+    })
 </script>
 </body>
 </html>
