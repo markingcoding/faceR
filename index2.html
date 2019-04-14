@@ -38,7 +38,7 @@
                          <img src="assets/images/pinclipart.com-cliparts-smilies-kostenlos-1169897-76x76.png"  title="" style="height: 3.8rem;">
                     </a>
                 </span>
-                <span class="navbar-caption-wrap"><a class="navbar-caption text-white display-4" href="index.html">FaceR<br></a></span>
+                <span class="navbar-caption-wrap"><a class="navbar-caption text-white display-4" href="index.html">Neuro AI<br></a></span>
             </div>
         </div>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -61,8 +61,6 @@
     </nav>
 </section>
 
-<section class="engine"><a href="#">templates</a>
-</section>
 <section class="header8 cid-rjQaMyewdN mbr-fullscreen" style="background-image:url('assets/images/mbr-1920x1079.jpg');" id="header8-14">
 
     <div class="container align-center">
@@ -140,7 +138,7 @@
         <!--</div>-->
         <div class="video-block" style="width: 80%;">
             <div>
-                <input type="button" class="btn btn-sm" id="musicControlBtn" onclick="startStopMusic();" value="🔇" style="position: relative;left:-45%;bottom:-50px;z-index:9;">
+                <input type="button" class="btn btn-sm" id="musicControlBtn" onclick="startStopMusic();" value="🔊" style="position: relative;left:-45%;bottom:-50px;z-index:9;">
                 <img src="assets/images/introduceFace.gif" style="z-index:1;">
             </div>
         </div>
@@ -641,10 +639,10 @@
             let control = document.getElementById("musicControlBtn");
             if (audio.paused) {
                 audio.play();
-                control.value = "🔇";
+                control.value = "🔊";
             } else {
                 audio.pause();
-                control.value = "🔊";
+                control.value = "🔇";
             }
         }
 </script>
