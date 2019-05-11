@@ -1384,7 +1384,8 @@ body {
 }
 .cid-qTkzRZLJNu .navbar {
   padding: .5rem 0;
-  background: #000e56;
+  /*background: #000e56;*/
+  background-image: url("../../images/bar.png");
   transition: none;
   min-height: 77px;
 }
@@ -2383,7 +2384,8 @@ body {
 }
 .cid-qTkzRZLJNu .navbar {
   padding: .5rem 0;
-  background: #000e56;
+  /*background: #000e56;*/
+  background-image: url("../../images/bar.png");
   transition: none;
   min-height: 77px;
 }
