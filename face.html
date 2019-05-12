@@ -16,7 +16,7 @@
   <link rel="stylesheet" href="assets/dropdown/css/style.css">
   <link rel="stylesheet" href="assets/theme/css/style.css">
   <link rel="stylesheet" href="assets/mobirise/css/mbr-additional.css" type="text/css">
-  
+
   
   
 </head>
@@ -64,7 +64,8 @@
   <section class="cid-rjWzhL9yBH mbr-fullscreen" id="header2-15" style="background-image: url('assets/images/mbr-1920x1079.jpg');background-repeat: no-repeat;background-size: cover;background-position: center;margin-top:60px;">
       <div class="container align-center" style="margin-top: -160px;">
           <!--<div class="row justify-content-md-center">-->
-              <video id="v" class="col-xs-12 col-sm-12 col-md-10 col-lg-8 col-xl-8"></video>
+              <!--<video id="v" class="col-xs-12 col-sm-12 col-md-10 col-lg-8 col-xl-8"></video>-->
+          <img id="imgback" src="">
               <!--<div class="mbr-white col-md-10" style="margin-top:-380px">-->
                   <!--<div class="video-block">-->
                       <!--<div><iframe class="mbr-embedded-video" src="https://www.youtube.com/embed/Pls_q2aQzHg?rel=0&amp;amp;showinfo=0&amp;autoplay=0&amp;loop=0" width="750" height="306" frameborder="0"></iframe></div>-->
@@ -134,11 +135,6 @@
   </section>
 
 <section once="" class="cid-rjz7QG9ZjS" id="footer7-z">
-
-    
-
-    
-
     <div class="container">
         <div class="media-container-row align-center mbr-white">
             <div class="row row-links">
@@ -173,44 +169,40 @@
   <script src="assets/vimeoplayer/jquery.mb.vimeo_player.js"></script>
   <script src="assets/dropdown/js/script.min.js"></script>
   <script src="assets/theme/js/script.js"></script>
+  <script src="assets/socketio/socketio.js"></script>
 
+  <video autoplay style="opacity:0;" hidden></video>
   <script>
-      !(function () {
-          if (navigator.mediaDevices === undefined) {
-              navigator.mediaDevices = {};
-          }
-          if (navigator.mediaDevices.getUserMedia === undefined) {
-              navigator.mediaDevices.getUserMedia = function (constraints) {
-                  var getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
+      $(document).ready(function() {
+          const wsUrl = "http://localhost:5000";
+          const FPS = 3;
 
-                  if (!getUserMedia) {
-                      return Promise.reject(new Error('getUserMedia is not implemented in this browser'));
-                  }
-
-                  return new Promise(function (resolve, reject) {
-                      getUserMedia.call(navigator, constraints, resolve, reject);
-                  });
-              }
-          }
-          const constraints = {
-              video: true,
-              audio: false
+          const video = document.querySelector('video');
+          navigator.mediaDevices.getUserMedia({video: {width: 540, height: 360}}).then((stream) => video.srcObject = stream);
+          // returns a frame encoded in base64
+          const getFrame = () => {
+              const canvas = document.createElement('canvas');
+              canvas.width = video.videoWidth;
+              canvas.height = video.videoHeight;
+              canvas.getContext('2d').drawImage(video, 0, 0);
+              return canvas.toDataURL('image/png');
           };
-          let promise = navigator.mediaDevices.getUserMedia(constraints);
-          promise.then(stream => {
-              let v = document.getElementById('v');
-              if ("srcObject" in v) {
-                  v.srcObject = stream;
-              } else {
-                  v.src = window.URL.createObjectURL(stream);
-              }
-              v.onloadedmetadata = function (e) {
-                  v.play();
-              };
-          }).catch(err => {
-              console.error(err.name + ": " + err.message);
+          const ws1 = io.connect(wsUrl + '/message');
+          let sid = "";
+          ws1.on("connect", () => {
+              //console.log(`Connected to ${WS_URL}`);
+              const img = document.getElementById("imgback");
+              sid = ws1.io.engine.id;
+              let chanSid = "imgback_" + sid;
+              ws1.on(chanSid, (message) => {
+                  // set the base64 string to the src tag of the image
+                  img.src = message.data;
+              });
+              setInterval(() => {
+                  ws1.emit("message", getFrame());
+              }, 1000 / FPS);
           })
-      })();
+      });
   </script>
 </body>
 </html>
