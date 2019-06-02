@@ -171,15 +171,18 @@
   <script src="assets/dropdown/js/script.min.js"></script>
   <script src="assets/theme/js/script.js"></script>
   <script src="assets/socketio/socketio.js"></script>
+  <script src="assets/libs/utils.js"></script>
+  <script src="assets/libs/lodash.min.js"></script>
+  <script src="assets/clmtrackr/clmtrackr.js"></script>
 
   <video autoplay style="opacity:0;" hidden></video>
   <script>
       $(document).ready(function() {
           const wsUrl = "http://localhost:5000";
-          const FPS = 3;
+          const FPS = 20;
 
           const video = document.querySelector('video');
-          navigator.mediaDevices.getUserMedia({video: {width: 540, height: 360}}).then((stream) => video.srcObject = stream);
+          navigator.mediaDevices.getUserMedia({video: {width: 160, height: 160}}).then((stream) => video.srcObject = stream);
           // returns a frame encoded in base64
           const getFrame = () => {
               const canvas = document.createElement('canvas');
