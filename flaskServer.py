@@ -40,7 +40,7 @@ def test_connect():
 if __name__ == '__main__':
     debug=True
     threaded=True
-    app.run(host="0.0.0.0", port=5000)
-    socketio.run(app, host='0.0.0.0', port=5000, debug=True)
+    app.run(host="0.0.0.0", port=8080)
+    socketio.run(app, host='0.0.0.0', port=8080, debug=True)
 
 
