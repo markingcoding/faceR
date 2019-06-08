@@ -76,7 +76,7 @@
                   height="360" style="position: absolute;"></canvas>
           <img id='croppedImage' style="opacity:0;" hidden/>
           <img id='resizedImage' style="opacity:0;" hidden/>
-          <img id="graph" src="assets/images/distance_fig.png" width="540" height="540" style="margin-left: 600px;">
+          <img id="graph" src="assets/images/distance_fig.png" width="540" height="360" style="margin-left: 600px;">
               <!--<div class="mbr-white col-md-10" style="margin-top:-380px">-->
                   <!--<div class="video-block">-->
                       <!--<div><iframe class="mbr-embedded-video" src="https://www.youtube.com/embed/Pls_q2aQzHg?rel=0&amp;amp;showinfo=0&amp;autoplay=0&amp;loop=0" width="750" height="306" frameborder="0"></iframe></div>-->
@@ -312,6 +312,8 @@
           //     canvas.getContext('2d').drawImage(video, 0, 0);
           //     return canvas.toDataURL('image/png');
           // };
+          positionLoop();
+          drawLoop();
           const ws1 = io.connect(wsUrl + '/message');
           let sid = "";
           ws1.on("connect", () => {
@@ -322,38 +324,35 @@
               ws1.on(chanSid, (message) => {
                   // console.log(message);
                   // drawFaceIcon(message.faceCode);
-                  positionLoop();
-                  drawLoop();
                   let faceCode = message.result;
                   let imageObj = new Image();
                   // 32 px png icon
-                  // TODO default icon
-                  // TODO find icon src
                   imageObj.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAQAAADZc7J/AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QA/4ePzL8AAAAJcEhZcwAAOw4AADsOAcy2oYMAAAAHdElNRQfjBRcGGSz0f5qTAAACFklEQVRIx63VzUtUYRQG8J93RlCQGDFHw/BjqwjOTsMWQYpIuAwx3Od/VLqWsnAjiShBShCIC0VcqSDiZJpCQyguDG2hjvc6d/zIzu4873nOe99zz3NOiXhLqtHksUr8krVh15+4wJIYLO25F9qknDhGqUDOkk8++3lTgpR+rz2y5Isl3x2gQp02z7T54a13copaxpQ9I9qVFZyVaTdiz5RMMXqvdQu6JItekNRtwbreeHrWuHo3Wb1x2cIUGavGVd9Ih2rjVqMPSZk0r+FWdGgwb1LqEhiyq/vWdOi2a+jCqbFoJF+6QFpaUECJ4kkjFtWcOQN2dOQDB61YMViQ4CreYccAJIyaVn4Opy07dWpZOkIvxMtNG5UI1MqYdXSnCsCRWRm1dNrWc82nFsd7bOukX1Zr0WJdh7fK6k9KOXYQgk8KFVcEP3AsFbinBXJKVYSQpCpBkdiqiNAqlMoFsgJ1IbjZRy2xCVp81Bzy6wSygQ25iDAONemKTdClyWHIz8jZuNpIJAxb1lhAb7RsWCLvnzcSV1uZVmvGLvr83GqMWYv87nwrXxUT9Nkyp1elhIRKveZs6YuUOiSmODl3mrFv0YQJi/bN6Iyc5+V8NpVTRj300mYo5IEnnmrApq+++R06a/DBvlfh+VxspJXEbI6Ykca9h+pZinULuv91rJ895M6L5a6r7Y330dX235fr5Wtvud7/AlAXs42d19StAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDE5LTA1LTIzVDA2OjI1OjQ0LTA0OjAwIPJHewAAACV0RVh0ZGF0ZTptb2RpZnkAMjAxOS0wNS0yM1QwNjoyNTo0NC0wNDowMFGv/8cAAAAASUVORK5CYII=';
                   if (faceCode == null || faceCode === undefined) {
                       // nothing
                       // return;
                   } else if (faceCode === 1 || faceCode === '1') {
                       // smile
+                      console.log("smile");
                       imageObj.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAQAAADZc7J/AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QA/4ePzL8AAAAJcEhZcwAAOw4AADsOAcy2oYMAAAAHdElNRQfjBRcGGSz0f5qTAAACFklEQVRIx63VzUtUYRQG8J93RlCQGDFHw/BjqwjOTsMWQYpIuAwx3Od/VLqWsnAjiShBShCIC0VcqSDiZJpCQyguDG2hjvc6d/zIzu4873nOe99zz3NOiXhLqtHksUr8krVh15+4wJIYLO25F9qknDhGqUDOkk8++3lTgpR+rz2y5Isl3x2gQp02z7T54a13copaxpQ9I9qVFZyVaTdiz5RMMXqvdQu6JItekNRtwbreeHrWuHo3Wb1x2cIUGavGVd9Ih2rjVqMPSZk0r+FWdGgwb1LqEhiyq/vWdOi2a+jCqbFoJF+6QFpaUECJ4kkjFtWcOQN2dOQDB61YMViQ4CreYccAJIyaVn4Opy07dWpZOkIvxMtNG5UI1MqYdXSnCsCRWRm1dNrWc82nFsd7bOukX1Zr0WJdh7fK6k9KOXYQgk8KFVcEP3AsFbinBXJKVYSQpCpBkdiqiNAqlMoFsgJ1IbjZRy2xCVp81Bzy6wSygQ25iDAONemKTdClyWHIz8jZuNpIJAxb1lhAb7RsWCLvnzcSV1uZVmvGLvr83GqMWYv87nwrXxUT9Nkyp1elhIRKveZs6YuUOiSmODl3mrFv0YQJi/bN6Iyc5+V8NpVTRj300mYo5IEnnmrApq+++R06a/DBvlfh+VxspJXEbI6Ykca9h+pZinULuv91rJ895M6L5a6r7Y330dX235fr5Wtvud7/AlAXs42d19StAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDE5LTA1LTIzVDA2OjI1OjQ0LTA0OjAwIPJHewAAACV0RVh0ZGF0ZTptb2RpZnkAMjAxOS0wNS0yM1QwNjoyNTo0NC0wNDowMFGv/8cAAAAASUVORK5CYII=';
                   } else if (faceCode === 2 || faceCode === '2') {
                       // fake smile
+                      console.log("fake smile");
+                      imageObj.src = 'data:image/png;base64,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';
                   } else if (faceCode === 3 || faceCode === '3') {
-                      // surprise
-                  } else if (faceCode === 4 || faceCode === '4') {
-                      // other
+                      // low motivation
+                      console.log("low motivation");
+                      imageObj.src = 'data:image/png;base64,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'
+
                   } else {
                       // nothing
                       // return;
                   }
                   ctx.drawImage(imageObj, posX + width - 32, posY);
-                  // TODO replace graph pic with message.graph
-                  // graph.src = message.graph;
+                  graph.src = message.graph;
               });
               setInterval(() => {
-                  let image = crop_video();
-                  ws1.emit("message", image);
-                  graph.src = image;
+                  ws1.emit("message", crop_video());
               }, 1000 / FPS);
           });
 
@@ -371,22 +370,6 @@
               ctxTmp.drawImage(videoInput,
                   posX, posY, canvasTmp.width * 2, canvasTmp.height * 2,
                   0, 0, MAX_SEND_SIZE, MAX_SEND_SIZE);
-              // ctxTmp.putImageData(
-              //     trackerImgData,
-              //     0, 0);
-
-              // ctxTmp.putImageData(
-              //     trackerImgData,
-              //     0, 0);
-
-              // if (width > height) {
-              //     croppedImageTag.setAttribute('width', width + 'px');
-              //     croppedImageTag.setAttribute('height', 'auto');
-              // } else if (height > 0) {
-              //     croppedImageTag.setAttribute('width', 'auto');
-              //     croppedImageTag.setAttribute('height', height + 'px');
-              // }
-
               croppedImage = canvasTmp.toDataURL("image/jpeg", 0.8);
               croppedImageTag.setAttribute('src', croppedImage);
               // console.log('Size of crop_video:', croppedImage.length)
@@ -394,90 +377,6 @@
               // return resize_image(croppedImageTag, resizedImageTag)
           }
 
-          function resize_image(src, dst, type, quality) {
-              let tmp = new Image(),
-                  canvas, context, cW, cH;
-
-              type = type || 'image/jpeg';
-              quality = quality || 0.8;
-
-              cW = src.naturalWidth;
-              cH = src.naturalHeight;
-
-              tmp.src = src.src;
-              canvas = document.createElement('canvas');
-              context = canvas.getContext('2d');
-              context.drawImage(tmp, 0, 0,cW, cH, 0, 0 , 160, 160);
-              return canvas.toDataURL(type, 1);
-              // tmp.onload = function () {
-
-                  // canvas = document.createElement('canvas');
-                  //
-                  // if (cW < src.width) cW = src.width;
-                  // if (cH < src.height) cH = src.height;
-                  //
-                  // const MAX_SEND_SIZE = 60;
-                  // // cW /= 2;
-                  // // cH /= 2;
-                  // cW = cW < MAX_SEND_SIZE ? cW : MAX_SEND_SIZE;
-                  // cH = cH < MAX_SEND_SIZE ? cH : MAX_SEND_SIZE;
-                  //
-                  // canvas.width = cW;
-                  // canvas.height = cH;
-                  // context = canvas.getContext('2d');
-                  // context.drawImage(tmp, 0, 0, cW, cH);
-
-                  // resizedImage =  canvas.toDataURL(type, quality);
-                  // dst.src = resizedImage;
-                  // console.log('Size of resize_image:', resizedImage.length)
-
-                  // if (cW <= src.width || cH <= src.height)
-                  //     return;
-
-                  // tmp.src = dst.src;
-                  return canvas.toDataURL(type, quality);
-              // return src.src;
-              // }
-              // let tmp = new Image(),
-              //     canvas, context, cW, cH;
-              //
-              // type = type || 'image/jpeg';
-              // quality = quality || 0.8;
-              //
-              // cW = src.naturalWidth;
-              // cH = src.naturalHeight;
-              //
-              // tmp.src = src.src;
-              // console.log(tmp.src);
-              // // tmp.onload = function () {
-              //
-              //     canvas = document.createElement('canvas');
-              //
-              //     // if (cW < src.width) cW = src.width;
-              //     // if (cH < src.height) cH = src.height;
-              //     //
-              //     // const MAX_SEND_SIZE = 160;
-              //     // // cW /= 2;
-              //     // // cH /= 2;
-              //     // cW = cW < MAX_SEND_SIZE ? cW : MAX_SEND_SIZE;
-              //     // cH = cH < MAX_SEND_SIZE ? cH : MAX_SEND_SIZE;
-              //
-              //     canvas.width = cW;
-              //     canvas.height = cH;
-              //     context = canvas.getContext('2d');
-              //     context.drawImage(tmp, 0, 0, 160, 160);
-              //
-              //     // resizedImage =  canvas.toDataURL(type, quality);
-              //     // dst.src = resizedImage;
-              //     // // console.log('Size of resize_image:', resizedImage.length)
-              //     //
-              //     // if (cW <= src.width || cH <= src.height)
-              //     //     return;
-              //     //
-              //     // tmp.src = dst.src;
-              //     return canvas.toDataURL(type, quality);
-              // // }
-          }
       });
   </script>
 </body>
