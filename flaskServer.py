@@ -3,6 +3,7 @@ import os
 from flask import Flask, render_template, Response, request
 from flask import Flask, render_template
 from flask_socketio import SocketIO, emit
+import random
 
 #from camera import Camera
 
@@ -31,7 +32,7 @@ socketio = SocketIO(app)
 
 @socketio.on('message', namespace='/message')
 def test_message(message):
-    emit('imgback_'+request.sid, {'result': '1', 'graph': message})
+    emit('imgback_'+request.sid, {'result': random.randint(1, 3), 'graph': message})
 
 @socketio.on('connect', namespace='/message')
 def test_connect():
