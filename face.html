@@ -66,10 +66,9 @@
           <!--<div class="row justify-content-md-center">-->
               <!--<video id="v" class="col-xs-12 col-sm-12 col-md-10 col-lg-8 col-xl-8"></video>-->
           <!--<img id="imgback" src="">-->
-          <video autoplay style="height: 360px;width: 540px; position: absolute;" id="video"
+          <video autoplay style="position: absolute;" id="video"
                  width="540"
                  height="360"
-                 autoplay
                  loop
                  playsinline></video>
           <canvas id="canvas"
@@ -77,7 +76,7 @@
                   height="360" style="position: absolute;"></canvas>
           <img id='croppedImage' style="opacity:0;" hidden/>
           <img id='resizedImage' style="opacity:0;" hidden/>
-          <img id="graph" src="assets/images/distance_fig.png" style="height:360px;width:540px;">
+          <img id="graph" src="assets/images/distance_fig.png" width="540" height="540" style="margin-left: 600px;">
               <!--<div class="mbr-white col-md-10" style="margin-top:-380px">-->
                   <!--<div class="video-block">-->
                       <!--<div><iframe class="mbr-embedded-video" src="https://www.youtube.com/embed/Pls_q2aQzHg?rel=0&amp;amp;showinfo=0&amp;autoplay=0&amp;loop=0" width="750" height="306" frameborder="0"></iframe></div>-->
@@ -187,11 +186,14 @@
 
   <script>
       $(document).ready(function() {
+
           const videoInput = document.getElementById('video');
           const canvasInput = document.getElementById('canvas');
           const out = document.getElementById('out')
 
           const ctx = canvasInput.getContext('2d');
+
+          const graph = document.getElementById('graph');
 
           const ctracker = new clm.tracker();
           ctracker.init();
@@ -248,50 +250,68 @@
                   }
               }
           }
-          positionLoop();
 
           function drawLoop() {
               requestAnimFrame(drawLoop);
               ctx.clearRect(0, 0, canvasInput.width, canvasInput.height);
-              ctracker.draw(canvasInput);
+              ctracker.draw(canvasInput); //draw green face line
               // Draw my rect
               ctx.strokeStyle = "red";
-              ctx.strokeRect(posX, posY, width, height);
+              ctx.strokeRect(posX, posY, width, height); // draw red square
 
-              // Draw icons
-              const imageObj = new Image();
               // 32 px png icon
-              imageObj.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAQAAADZc7J/AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QA/4ePzL8AAAAJcEhZcwAAOw4AADsOAcy2oYMAAAAHdElNRQfjBRcGGSz0f5qTAAACFklEQVRIx63VzUtUYRQG8J93RlCQGDFHw/BjqwjOTsMWQYpIuAwx3Od/VLqWsnAjiShBShCIC0VcqSDiZJpCQyguDG2hjvc6d/zIzu4873nOe99zz3NOiXhLqtHksUr8krVh15+4wJIYLO25F9qknDhGqUDOkk8++3lTgpR+rz2y5Isl3x2gQp02z7T54a13copaxpQ9I9qVFZyVaTdiz5RMMXqvdQu6JItekNRtwbreeHrWuHo3Wb1x2cIUGavGVd9Ih2rjVqMPSZk0r+FWdGgwb1LqEhiyq/vWdOi2a+jCqbFoJF+6QFpaUECJ4kkjFtWcOQN2dOQDB61YMViQ4CreYccAJIyaVn4Opy07dWpZOkIvxMtNG5UI1MqYdXSnCsCRWRm1dNrWc82nFsd7bOukX1Zr0WJdh7fK6k9KOXYQgk8KFVcEP3AsFbinBXJKVYSQpCpBkdiqiNAqlMoFsgJ1IbjZRy2xCVp81Bzy6wSygQ25iDAONemKTdClyWHIz8jZuNpIJAxb1lhAb7RsWCLvnzcSV1uZVmvGLvr83GqMWYv87nwrXxUT9Nkyp1elhIRKveZs6YuUOiSmODl3mrFv0YQJi/bN6Iyc5+V8NpVTRj300mYo5IEnnmrApq+++R06a/DBvlfh+VxspJXEbI6Ykca9h+pZinULuv91rJ895M6L5a6r7Y330dX235fr5Wtvud7/AlAXs42d19StAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDE5LTA1LTIzVDA2OjI1OjQ0LTA0OjAwIPJHewAAACV0RVh0ZGF0ZTptb2RpZnkAMjAxOS0wNS0yM1QwNjoyNTo0NC0wNDowMFGv/8cAAAAASUVORK5CYII='
-              ctx.drawImage(imageObj, posX + width - 32, posY)
-
+              // const imageObj = new Image();
+              //
+              // if (faceCode == null || faceCode === undefined) {
+              //     // nothing
+              //     return;
+              // } else if (faceCode === 1 || faceCode === '1') {
+              //     // smile
+              //     imageObj.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAQAAADZc7J/AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QA/4ePzL8AAAAJcEhZcwAAOw4AADsOAcy2oYMAAAAHdElNRQfjBRcGGSz0f5qTAAACFklEQVRIx63VzUtUYRQG8J93RlCQGDFHw/BjqwjOTsMWQYpIuAwx3Od/VLqWsnAjiShBShCIC0VcqSDiZJpCQyguDG2hjvc6d/zIzu4873nOe99zz3NOiXhLqtHksUr8krVh15+4wJIYLO25F9qknDhGqUDOkk8++3lTgpR+rz2y5Isl3x2gQp02z7T54a13copaxpQ9I9qVFZyVaTdiz5RMMXqvdQu6JItekNRtwbreeHrWuHo3Wb1x2cIUGavGVd9Ih2rjVqMPSZk0r+FWdGgwb1LqEhiyq/vWdOi2a+jCqbFoJF+6QFpaUECJ4kkjFtWcOQN2dOQDB61YMViQ4CreYccAJIyaVn4Opy07dWpZOkIvxMtNG5UI1MqYdXSnCsCRWRm1dNrWc82nFsd7bOukX1Zr0WJdh7fK6k9KOXYQgk8KFVcEP3AsFbinBXJKVYSQpCpBkdiqiNAqlMoFsgJ1IbjZRy2xCVp81Bzy6wSygQ25iDAONemKTdClyWHIz8jZuNpIJAxb1lhAb7RsWCLvnzcSV1uZVmvGLvr83GqMWYv87nwrXxUT9Nkyp1elhIRKveZs6YuUOiSmODl3mrFv0YQJi/bN6Iyc5+V8NpVTRj300mYo5IEnnmrApq+++R06a/DBvlfh+VxspJXEbI6Ykca9h+pZinULuv91rJ895M6L5a6r7Y330dX235fr5Wtvud7/AlAXs42d19StAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDE5LTA1LTIzVDA2OjI1OjQ0LTA0OjAwIPJHewAAACV0RVh0ZGF0ZTptb2RpZnkAMjAxOS0wNS0yM1QwNjoyNTo0NC0wNDowMFGv/8cAAAAASUVORK5CYII=';
+              // } else if (faceCode === 2 || faceCode === '2') {
+              //     imageObj.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAQAAADZc7J/AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QA/4ePzL8AAAAJcEhZcwAAOw4AADsOAcy2oYMAAAAHdElNRQfjBRcGGSz0f5qTAAACFklEQVRIx63VzUtUYRQG8J93RlCQGDFHw/BjqwjOTsMWQYpIuAwx3Od/VLqWsnAjiShBShCIC0VcqSDiZJpCQyguDG2hjvc6d/zIzu4873nOe99zz3NOiXhLqtHksUr8krVh15+4wJIYLO25F9qknDhGqUDOkk8++3lTgpR+rz2y5Isl3x2gQp02z7T54a13copaxpQ9I9qVFZyVaTdiz5RMMXqvdQu6JItekNRtwbreeHrWuHo3Wb1x2cIUGavGVd9Ih2rjVqMPSZk0r+FWdGgwb1LqEhiyq/vWdOi2a+jCqbFoJF+6QFpaUECJ4kkjFtWcOQN2dOQDB61YMViQ4CreYccAJIyaVn4Opy07dWpZOkIvxMtNG5UI1MqYdXSnCsCRWRm1dNrWc82nFsd7bOukX1Zr0WJdh7fK6k9KOXYQgk8KFVcEP3AsFbinBXJKVYSQpCpBkdiqiNAqlMoFsgJ1IbjZRy2xCVp81Bzy6wSygQ25iDAONemKTdClyWHIz8jZuNpIJAxb1lhAb7RsWCLvnzcSV1uZVmvGLvr83GqMWYv87nwrXxUT9Nkyp1elhIRKveZs6YuUOiSmODl3mrFv0YQJi/bN6Iyc5+V8NpVTRj300mYo5IEnnmrApq+++R06a/DBvlfh+VxspJXEbI6Ykca9h+pZinULuv91rJ895M6L5a6r7Y330dX235fr5Wtvud7/AlAXs42d19StAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDE5LTA1LTIzVDA2OjI1OjQ0LTA0OjAwIPJHewAAACV0RVh0ZGF0ZTptb2RpZnkAMjAxOS0wNS0yM1QwNjoyNTo0NC0wNDowMFGv/8cAAAAASUVORK5CYII=';
+              //     // fake smile
+              // } else if (faceCode === 3 || faceCode === '3') {
+              //     // surprise
+              // } else if (faceCode === 4 || faceCode === '4') {
+              //     // other
+              // } else {
+              //     // nothing
+              //     return;
+              // }
+              // // Draw icons
+              // imageObj.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAQAAADZc7J/AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QA/4ePzL8AAAAJcEhZcwAAOw4AADsOAcy2oYMAAAAHdElNRQfjBRcGGSz0f5qTAAACFklEQVRIx63VzUtUYRQG8J93RlCQGDFHw/BjqwjOTsMWQYpIuAwx3Od/VLqWsnAjiShBShCIC0VcqSDiZJpCQyguDG2hjvc6d/zIzu4873nOe99zz3NOiXhLqtHksUr8krVh15+4wJIYLO25F9qknDhGqUDOkk8++3lTgpR+rz2y5Isl3x2gQp02z7T54a13copaxpQ9I9qVFZyVaTdiz5RMMXqvdQu6JItekNRtwbreeHrWuHo3Wb1x2cIUGavGVd9Ih2rjVqMPSZk0r+FWdGgwb1LqEhiyq/vWdOi2a+jCqbFoJF+6QFpaUECJ4kkjFtWcOQN2dOQDB61YMViQ4CreYccAJIyaVn4Opy07dWpZOkIvxMtNG5UI1MqYdXSnCsCRWRm1dNrWc82nFsd7bOukX1Zr0WJdh7fK6k9KOXYQgk8KFVcEP3AsFbinBXJKVYSQpCpBkdiqiNAqlMoFsgJ1IbjZRy2xCVp81Bzy6wSygQ25iDAONemKTdClyWHIz8jZuNpIJAxb1lhAb7RsWCLvnzcSV1uZVmvGLvr83GqMWYv87nwrXxUT9Nkyp1elhIRKveZs6YuUOiSmODl3mrFv0YQJi/bN6Iyc5+V8NpVTRj300mYo5IEnnmrApq+++R06a/DBvlfh+VxspJXEbI6Ykca9h+pZinULuv91rJ895M6L5a6r7Y330dX235fr5Wtvud7/AlAXs42d19StAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDE5LTA1LTIzVDA2OjI1OjQ0LTA0OjAwIPJHewAAACV0RVh0ZGF0ZTptb2RpZnkAMjAxOS0wNS0yM1QwNjoyNTo0NC0wNDowMFGv/8cAAAAASUVORK5CYII=';
+              // ctx.drawImage(imageObj, posX + width - 32, posY);
               // const trackerImgData = ctx.getImageData(posX, posY, maxLeft - posX, maxHeight - posY)
 
               // setTimeout VS requestAnimFrame: https://liginc.co.jp/web/js/130758
               // setTimeout(
               //     () => {
-              //         // draw green line to image TODO
+              //         // draw green line to image
               //         // crop_img(ctx, trackerImgData);
               //         crop_video();
               //     },
               //     50);
-              requestAnimFrame(crop_video)
+              // requestAnimFrame(crop_video)
           }
-          drawLoop();
+          // function createFaceIcon(faceCode) {
+          //     return imageObj;
+          // }
 
           const wsUrl = window.SERVER_URL ? window.SERVER_URL : "http://localhost:5000";
-          // TODO set FPS
+          // set FPS
           const FPS = 5;
 
           const video = document.querySelector('video');
           navigator.mediaDevices.getUserMedia({video: {}}).then((stream) => video.srcObject = stream);
           // returns a frame encoded in base64
-          const getFrame = () => {
-              const canvas = document.createElement('canvas');
-              canvas.width = video.videoWidth;
-              canvas.height = video.videoHeight;
-              canvas.getContext('2d').drawImage(video, 0, 0);
-              return canvas.toDataURL('image/png');
-          };
+          // const getFrame = () => {
+          //     const canvas = document.createElement('canvas');
+          //     canvas.width = video.videoWidth;
+          //     canvas.height = video.videoHeight;
+          //     canvas.getContext('2d').drawImage(video, 0, 0);
+          //     return canvas.toDataURL('image/png');
+          // };
           const ws1 = io.connect(wsUrl + '/message');
           let sid = "";
           ws1.on("connect", () => {
@@ -300,29 +320,57 @@
               sid = ws1.io.engine.id;
               let chanSid = "imgback_" + sid;
               ws1.on(chanSid, (message) => {
-                  // TODO according to status message.code to draw face, and replace graph pic with message.graph
-
-                  // set the base64 string to the src tag of the image
-                  // img.src = message.data;
+                  // console.log(message);
+                  // drawFaceIcon(message.faceCode);
+                  positionLoop();
+                  drawLoop();
+                  let faceCode = message.result;
+                  let imageObj = new Image();
+                  // 32 px png icon
+                  // TODO default icon
+                  // TODO find icon src
+                  imageObj.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAQAAADZc7J/AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QA/4ePzL8AAAAJcEhZcwAAOw4AADsOAcy2oYMAAAAHdElNRQfjBRcGGSz0f5qTAAACFklEQVRIx63VzUtUYRQG8J93RlCQGDFHw/BjqwjOTsMWQYpIuAwx3Od/VLqWsnAjiShBShCIC0VcqSDiZJpCQyguDG2hjvc6d/zIzu4873nOe99zz3NOiXhLqtHksUr8krVh15+4wJIYLO25F9qknDhGqUDOkk8++3lTgpR+rz2y5Isl3x2gQp02z7T54a13copaxpQ9I9qVFZyVaTdiz5RMMXqvdQu6JItekNRtwbreeHrWuHo3Wb1x2cIUGavGVd9Ih2rjVqMPSZk0r+FWdGgwb1LqEhiyq/vWdOi2a+jCqbFoJF+6QFpaUECJ4kkjFtWcOQN2dOQDB61YMViQ4CreYccAJIyaVn4Opy07dWpZOkIvxMtNG5UI1MqYdXSnCsCRWRm1dNrWc82nFsd7bOukX1Zr0WJdh7fK6k9KOXYQgk8KFVcEP3AsFbinBXJKVYSQpCpBkdiqiNAqlMoFsgJ1IbjZRy2xCVp81Bzy6wSygQ25iDAONemKTdClyWHIz8jZuNpIJAxb1lhAb7RsWCLvnzcSV1uZVmvGLvr83GqMWYv87nwrXxUT9Nkyp1elhIRKveZs6YuUOiSmODl3mrFv0YQJi/bN6Iyc5+V8NpVTRj300mYo5IEnnmrApq+++R06a/DBvlfh+VxspJXEbI6Ykca9h+pZinULuv91rJ895M6L5a6r7Y330dX235fr5Wtvud7/AlAXs42d19StAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDE5LTA1LTIzVDA2OjI1OjQ0LTA0OjAwIPJHewAAACV0RVh0ZGF0ZTptb2RpZnkAMjAxOS0wNS0yM1QwNjoyNTo0NC0wNDowMFGv/8cAAAAASUVORK5CYII=';
+                  if (faceCode == null || faceCode === undefined) {
+                      // nothing
+                      // return;
+                  } else if (faceCode === 1 || faceCode === '1') {
+                      // smile
+                      imageObj.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAQAAADZc7J/AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QA/4ePzL8AAAAJcEhZcwAAOw4AADsOAcy2oYMAAAAHdElNRQfjBRcGGSz0f5qTAAACFklEQVRIx63VzUtUYRQG8J93RlCQGDFHw/BjqwjOTsMWQYpIuAwx3Od/VLqWsnAjiShBShCIC0VcqSDiZJpCQyguDG2hjvc6d/zIzu4873nOe99zz3NOiXhLqtHksUr8krVh15+4wJIYLO25F9qknDhGqUDOkk8++3lTgpR+rz2y5Isl3x2gQp02z7T54a13copaxpQ9I9qVFZyVaTdiz5RMMXqvdQu6JItekNRtwbreeHrWuHo3Wb1x2cIUGavGVd9Ih2rjVqMPSZk0r+FWdGgwb1LqEhiyq/vWdOi2a+jCqbFoJF+6QFpaUECJ4kkjFtWcOQN2dOQDB61YMViQ4CreYccAJIyaVn4Opy07dWpZOkIvxMtNG5UI1MqYdXSnCsCRWRm1dNrWc82nFsd7bOukX1Zr0WJdh7fK6k9KOXYQgk8KFVcEP3AsFbinBXJKVYSQpCpBkdiqiNAqlMoFsgJ1IbjZRy2xCVp81Bzy6wSygQ25iDAONemKTdClyWHIz8jZuNpIJAxb1lhAb7RsWCLvnzcSV1uZVmvGLvr83GqMWYv87nwrXxUT9Nkyp1elhIRKveZs6YuUOiSmODl3mrFv0YQJi/bN6Iyc5+V8NpVTRj300mYo5IEnnmrApq+++R06a/DBvlfh+VxspJXEbI6Ykca9h+pZinULuv91rJ895M6L5a6r7Y330dX235fr5Wtvud7/AlAXs42d19StAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDE5LTA1LTIzVDA2OjI1OjQ0LTA0OjAwIPJHewAAACV0RVh0ZGF0ZTptb2RpZnkAMjAxOS0wNS0yM1QwNjoyNTo0NC0wNDowMFGv/8cAAAAASUVORK5CYII=';
+                  } else if (faceCode === 2 || faceCode === '2') {
+                      // fake smile
+                  } else if (faceCode === 3 || faceCode === '3') {
+                      // surprise
+                  } else if (faceCode === 4 || faceCode === '4') {
+                      // other
+                  } else {
+                      // nothing
+                      // return;
+                  }
+                  ctx.drawImage(imageObj, posX + width - 32, posY);
+                  // TODO replace graph pic with message.graph
+                  // graph.src = message.graph;
               });
               setInterval(() => {
-                  ws1.emit("message", crop_video());
+                  let image = crop_video();
+                  ws1.emit("message", image);
+                  graph.src = image;
               }, 1000 / FPS);
-          })
+          });
 
           function crop_video() {
               // 画像切り取り
               var canvasTmp = document.createElement("canvas");
-              canvasTmp.width = width;
-              canvasTmp.height = height;
+              const MAX_SEND_SIZE = 160;
+              canvasTmp.width = MAX_SEND_SIZE;
+              canvasTmp.height = MAX_SEND_SIZE;
               var ctxTmp = canvasTmp.getContext("2d");
-              ctxTmp.rect(0, 0,  width, height);
+              ctxTmp.rect(0, 0,  MAX_SEND_SIZE, MAX_SEND_SIZE);
               // ctxTmp.fillStyle = 'white';
               // ctxTmp.fill();
               // ctxTmp.putImageData(crop.binarizer.source, 0, 0);
               ctxTmp.drawImage(videoInput,
-                  posX, posY, width, height,
-                  0, 0, width, height)
+                  posX, posY, canvasTmp.width * 2, canvasTmp.height * 2,
+                  0, 0, MAX_SEND_SIZE, MAX_SEND_SIZE);
               // ctxTmp.putImageData(
               //     trackerImgData,
               //     0, 0);
@@ -331,19 +379,19 @@
               //     trackerImgData,
               //     0, 0);
 
-              if (width > height) {
-                  croppedImageTag.setAttribute('width', width + 'px');
-                  croppedImageTag.setAttribute('height', 'auto');
-              } else if (height > 0) {
-                  croppedImageTag.setAttribute('width', 'auto');
-                  croppedImageTag.setAttribute('height', height + 'px');
-              }
+              // if (width > height) {
+              //     croppedImageTag.setAttribute('width', width + 'px');
+              //     croppedImageTag.setAttribute('height', 'auto');
+              // } else if (height > 0) {
+              //     croppedImageTag.setAttribute('width', 'auto');
+              //     croppedImageTag.setAttribute('height', height + 'px');
+              // }
 
               croppedImage = canvasTmp.toDataURL("image/jpeg", 0.8);
               croppedImageTag.setAttribute('src', croppedImage);
               // console.log('Size of crop_video:', croppedImage.length)
-
-              return resize_image(croppedImageTag, resizedImageTag)
+              return croppedImage;
+              // return resize_image(croppedImageTag, resizedImageTag)
           }
 
           function resize_image(src, dst, type, quality) {
@@ -357,34 +405,78 @@
               cH = src.naturalHeight;
 
               tmp.src = src.src;
-              tmp.onload = function () {
+              canvas = document.createElement('canvas');
+              context = canvas.getContext('2d');
+              context.drawImage(tmp, 0, 0,cW, cH, 0, 0 , 160, 160);
+              return canvas.toDataURL(type, 1);
+              // tmp.onload = function () {
 
-                  canvas = document.createElement('canvas');
+                  // canvas = document.createElement('canvas');
+                  //
+                  // if (cW < src.width) cW = src.width;
+                  // if (cH < src.height) cH = src.height;
+                  //
+                  // const MAX_SEND_SIZE = 60;
+                  // // cW /= 2;
+                  // // cH /= 2;
+                  // cW = cW < MAX_SEND_SIZE ? cW : MAX_SEND_SIZE;
+                  // cH = cH < MAX_SEND_SIZE ? cH : MAX_SEND_SIZE;
+                  //
+                  // canvas.width = cW;
+                  // canvas.height = cH;
+                  // context = canvas.getContext('2d');
+                  // context.drawImage(tmp, 0, 0, cW, cH);
 
-                  if (cW < src.width) cW = src.width;
-                  if (cH < src.height) cH = src.height;
-
-                  const MAX_SEND_SIZE = 160;
-                  // cW /= 2;
-                  // cH /= 2;
-                  cW = cW < MAX_SEND_SIZE ? cW : MAX_SEND_SIZE;
-                  cH = cH < MAX_SEND_SIZE ? cH : MAX_SEND_SIZE;
-
-                  canvas.width = cW;
-                  canvas.height = cH;
-                  context = canvas.getContext('2d');
-                  context.drawImage(tmp, 0, 0, cW, cH);
-
-                  resizedImage =  canvas.toDataURL(type, quality);
-                  dst.src = resizedImage;
+                  // resizedImage =  canvas.toDataURL(type, quality);
+                  // dst.src = resizedImage;
                   // console.log('Size of resize_image:', resizedImage.length)
 
-                  if (cW <= src.width || cH <= src.height)
-                      return;
+                  // if (cW <= src.width || cH <= src.height)
+                  //     return;
 
-                  tmp.src = dst.src;
+                  // tmp.src = dst.src;
                   return canvas.toDataURL(type, quality);
-              }
+              // return src.src;
+              // }
+              // let tmp = new Image(),
+              //     canvas, context, cW, cH;
+              //
+              // type = type || 'image/jpeg';
+              // quality = quality || 0.8;
+              //
+              // cW = src.naturalWidth;
+              // cH = src.naturalHeight;
+              //
+              // tmp.src = src.src;
+              // console.log(tmp.src);
+              // // tmp.onload = function () {
+              //
+              //     canvas = document.createElement('canvas');
+              //
+              //     // if (cW < src.width) cW = src.width;
+              //     // if (cH < src.height) cH = src.height;
+              //     //
+              //     // const MAX_SEND_SIZE = 160;
+              //     // // cW /= 2;
+              //     // // cH /= 2;
+              //     // cW = cW < MAX_SEND_SIZE ? cW : MAX_SEND_SIZE;
+              //     // cH = cH < MAX_SEND_SIZE ? cH : MAX_SEND_SIZE;
+              //
+              //     canvas.width = cW;
+              //     canvas.height = cH;
+              //     context = canvas.getContext('2d');
+              //     context.drawImage(tmp, 0, 0, 160, 160);
+              //
+              //     // resizedImage =  canvas.toDataURL(type, quality);
+              //     // dst.src = resizedImage;
+              //     // // console.log('Size of resize_image:', resizedImage.length)
+              //     //
+              //     // if (cW <= src.width || cH <= src.height)
+              //     //     return;
+              //     //
+              //     // tmp.src = dst.src;
+              //     return canvas.toDataURL(type, quality);
+              // // }
           }
       });
   </script>
