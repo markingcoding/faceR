@@ -6,7 +6,6 @@ $(function () {
         .then(stream => (videoInput.srcObject = stream));
 
     const canvasInput = document.getElementById("canvas");
-    const out = document.getElementById("out");
 
     const ctx = canvasInput.getContext("2d");
 
@@ -87,7 +86,7 @@ $(function () {
 
     const ws = io.connect(getWsURL() + "/message");
     function sendCropImageToServer() {
-        const FPS = 0.5;
+        const FPS = 1;
         setInterval(() => {
             ws.emit("message", crop_video());
         }, 1000 / FPS);
@@ -147,36 +146,6 @@ $(function () {
     }
     receiveResultFromServer();
 
-
-    function crop_video() {
-        // 画像切り取り
-        var canvasTmp = document.createElement("canvas");
-        const MAX_SEND_SIZE = 60;
-        canvasTmp.width = MAX_SEND_SIZE;
-        canvasTmp.height = MAX_SEND_SIZE;
-        var ctxTmp = canvasTmp.getContext("2d");
-        ctxTmp.rect(0, 0, MAX_SEND_SIZE, MAX_SEND_SIZE);
-        // ctxTmp.fillStyle = 'white';
-        // ctxTmp.fill();
-        // ctxTmp.putImageData(crop.binarizer.source, 0, 0);
-        ctxTmp.drawImage(
-            videoInput,
-            posX,
-            posY,
-            canvasTmp.width * 2,
-            canvasTmp.height * 2,
-            0,
-            0,
-            MAX_SEND_SIZE,
-            MAX_SEND_SIZE
-        );
-        croppedImage = canvasTmp.toDataURL("image/jpeg", 0.8);
-        croppedImageTag.setAttribute("src", croppedImage);
-        // console.log('Size of crop_video:', croppedImage.length)
-        return croppedImage;
-        // return resize_image(croppedImageTag, resizedImageTag)
-    }
-
     function getWsURL() {
         if (
             location.href.indexOf("localhost") > -1 ||
@@ -187,5 +156,66 @@ $(function () {
             return window.SERVER_URL;
         }
         return "https://neuroai.jp/";
+    }
+
+    function crop_video() {
+        // 画像切り取り
+        var canvasTmp = document.createElement("canvas");
+        canvasTmp.width = width;
+        canvasTmp.height = height;
+        var ctxTmp = canvasTmp.getContext("2d");
+        ctxTmp.rect(0, 0,  width, height);
+        // ctxTmp.fillStyle = 'white';
+        // ctxTmp.fill();
+        // ctxTmp.putImageData(crop.binarizer.source, 0, 0);
+        ctxTmp.drawImage(videoInput,
+            posX, posY, width, height,
+            0, 0, width, height)
+        // ctxTmp.putImageData(
+        //     trackerImgData,
+        //     0, 0);
+        // ctxTmp.putImageData(
+        //     trackerImgData,
+        //     0, 0);
+        if (width > height) {
+            croppedImageTag.setAttribute('width', width + 'px');
+            croppedImageTag.setAttribute('height', 'auto');
+        } else if (height > 0) {
+            croppedImageTag.setAttribute('width', 'auto');
+            croppedImageTag.setAttribute('height', height + 'px');
+        }
+        croppedImage = canvasTmp.toDataURL("image/jpeg", 0.8);
+        croppedImageTag.setAttribute('src', croppedImage);
+        // console.log('Size of crop_video:', croppedImage.length)
+        resize_image(croppedImageTag, resizedImageTag)
+    }
+    const MAX_SEND_SIZE = 60;
+    function resize_image(src, dst, type, quality) {
+        let tmp = new Image(),
+            canvas, context, cW, cH;
+        type = type || 'image/jpeg';
+        quality = quality || 0.8;
+        cW = src.naturalWidth;
+        cH = src.naturalHeight;
+        tmp.src = src.src;
+        tmp.onload = function () {
+            canvas = document.createElement('canvas');
+            if (cW < src.width) cW = src.width;
+            if (cH < src.height) cH = src.height;
+            // cW /= 2;
+            // cH /= 2;
+            cW = cW < MAX_SEND_SIZE ? cW : MAX_SEND_SIZE;
+            cH = cH < MAX_SEND_SIZE ? cH : MAX_SEND_SIZE;
+            canvas.width = cW;
+            canvas.height = cH;
+            context = canvas.getContext('2d');
+            context.drawImage(tmp, 0, 0, cW, cH);
+            resizedImage =  canvas.toDataURL(type, quality);
+            dst.src = resizedImage;
+            // console.log('Size of resize_image:', resizedImage.length)
+            if (cW <= src.width || cH <= src.height)
+                return;
+            tmp.src = dst.src;
+        }
     }
 });
