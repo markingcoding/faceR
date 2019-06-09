@@ -29,9 +29,7 @@ $(function () {
     function positionLoop() {
         requestAnimFrame(positionLoop);
         const positions = ctracker.getCurrentPosition();
-        // do something with the positions ...
-        // print the positions
-        let positionString = "";
+
         if (positions) {
             const posX_original = _.minBy(positions, p => p[0])[0];
             const posY_original = _.minBy(positions, p => p[1])[1];
@@ -55,6 +53,9 @@ $(function () {
             posX = posX_original - (height - width_original) / 2;
             posX = posX > 0 ? posX : 0;
             width = height;
+
+            // console.log('Adjusted width=' + width, 'height=', height);
+
             // Ajust to get more Ears
             // if (height_original > width_original) {
             //     const xPercent = 0.1, yPercent = 0.6;
@@ -72,6 +73,9 @@ $(function () {
             // posX = posX_original;
             // posY = posY_original;
 
+        } else {
+            resizedImage = '';
+            console.log('invalid face');
         }
     }
     positionLoop();
@@ -84,6 +88,7 @@ $(function () {
         // Draw my rect
         ctx.strokeStyle = "red";
         ctx.strokeRect(posX, posY, width, height); // draw red square
+        // console.log('Rect width=' + width, 'height=', height);
 
         ctx.drawImage(imageObj, posX + width - 32, posY);
         requestAnimFrame(crop_video);
@@ -95,7 +100,13 @@ $(function () {
     function sendCropImageToServer() {
         const FPS = 1;
         setInterval(() => {
-            ws.emit("message", resizedImage);
+            if (resizedImage) {
+                // Only send valid resized Image
+                ws.compress(true).emit("message", resizedImage);
+            } else {
+                console.log('Not send data');
+            }
+
         }, 1000 / FPS);
     }
     sendCropImageToServer();
@@ -166,37 +177,41 @@ $(function () {
     }
 
     function crop_video() {
+        const r = 1.4; // FIXME why?
+        const cropWidth = width * r;
+        const cropHeight = height * r;
         // 画像切り取り
         var canvasTmp = document.createElement("canvas");
-        canvasTmp.width = width;
-        canvasTmp.height = height;
+        canvasTmp.width = cropWidth;
+        canvasTmp.height = cropHeight;
         var ctxTmp = canvasTmp.getContext("2d");
-        ctxTmp.rect(0, 0,  width, height);
+        ctxTmp.rect(0, 0, cropWidth, cropHeight);
         // ctxTmp.fillStyle = 'white';
         // ctxTmp.fill();
         // ctxTmp.putImageData(crop.binarizer.source, 0, 0);
         ctxTmp.drawImage(videoInput,
-            posX, posY, width, height,
-            0, 0, width, height)
+            posX, posY, cropWidth, cropHeight,
+            0, 0, cropWidth, cropHeight)
         // ctxTmp.putImageData(
         //     trackerImgData,
         //     0, 0);
         // ctxTmp.putImageData(
         //     trackerImgData,
         //     0, 0);
-        if (width > height) {
-            croppedImageTag.setAttribute('width', width + 'px');
-            croppedImageTag.setAttribute('height', 'auto');
-        } else if (height > 0) {
-            croppedImageTag.setAttribute('width', 'auto');
-            croppedImageTag.setAttribute('height', height + 'px');
-        }
+        // console.log('image width=' + cropWidth, 'height=', cropHeight);
+        // if (width > height) {
+        //     croppedImageTag.setAttribute('width', width + 'px');
+        //     croppedImageTag.setAttribute('height', width + 'px');
+        // } else if (height > 0) {
+        //     croppedImageTag.setAttribute('width', height + 'px');
+        //     croppedImageTag.setAttribute('height', height + 'px');
+        // }
         croppedImage = canvasTmp.toDataURL("image/jpeg", 0.8);
         croppedImageTag.setAttribute('src', croppedImage);
         // console.log('Size of crop_video:', croppedImage.length)
         resize_image(croppedImageTag, resizedImageTag);
     }
-    const MAX_SEND_SIZE = 60;
+    const MAX_SEND_SIZE = 160;
     function resize_image(src, dst, type, quality) {
         let tmp = new Image(),
             canvas, context, cW, cH;
