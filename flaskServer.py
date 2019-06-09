@@ -7,6 +7,7 @@ import io
 import cv2
 from imageio import imread
 import numpy as np
+import time
 
 import matplotlib.pyplot as plt
 
@@ -52,15 +53,17 @@ def gen(camera):
 #app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app)
 
+base64head = 'data:image/jpeg;base64,'
+faceImgPath = './faceimg/'
+
 @socketio.on('message', namespace='/message')
 def test_message(message):
     # print(message)
     # emit('imgback_'+request.sid, {'result': 1, 'graph': message})
-    base64head = 'data:image/jpeg;base64,'
     imgmessage = message.replace(base64head, '', 1)
     imgdata = base64.b64decode(imgmessage)
-    # FIXME change to sid + timestamp
-    filename = 'test.jpg'
+    timestamp = str(round(time.time() * 1000))
+    filename = faceImgPath + request.sid + timestamp + '.jpg'
     with open(filename, 'wb') as f:
         f.write(imgdata)
 
