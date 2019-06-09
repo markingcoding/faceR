@@ -1,5 +1,3 @@
-from importlib import import_module
-import os
 from flask import Flask, render_template, Response, request
 from flask import Flask, render_template
 from flask_socketio import SocketIO, emit
@@ -13,7 +11,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from align import opencv_align
-
 
 cascPath = "./models/opencv3/haarcascade_frontalface_default.xml"
 face_detector = opencv_align.AlignCV( cascPath )
@@ -58,38 +55,25 @@ socketio = SocketIO(app)
 @socketio.on('message', namespace='/message')
 def test_message(message):
     # print(message)
-    # TODO save pic
-    # TODO
+    # emit('imgback_'+request.sid, {'result': 1, 'graph': message})
     base64head = 'data:image/jpeg;base64,'
     imgmessage = message.replace(base64head, '', 1)
     imgdata = base64.b64decode(imgmessage)
+    # FIXME change to sid + timestamp
     filename = 'test.jpg'
     with open(filename, 'wb') as f:
         f.write(imgdata)
-    with open(filename, "rb") as fid:
-        data = fid.read()
 
-    # b64_bytes = base64.b64encode(data)
-
-    # reconstruct image as an numpy array
     img = imread(io.BytesIO(imgdata))
-    graph = getGraph(img)
-
-    data_encode = np.array(graph)
-    str_encode = data_encode.tostring()
-    nparr = np.fromstring(str_encode, np.uint8)
-    # img_decode = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
-    print(nparr)
-
-    emit('imgback_'+request.sid, {'result': random.randint(1, 3), 'graph': nparr})
-    # print(img_decode)
-    # emit('imgback_'+request.sid, {'result': '1', 'graph': img_decode})
+    # emit('imgback_'+request.sid, {'result': random.randint(1, 3), 'graph': graph})
+    emit('imgback_'+request.sid, {'result': random.randint(1, 3)})
+    generate_graph(message)
 
 @socketio.on('connect', namespace='/message')
 def test_connect():
     print(request.sid + "connected")
 
-def getGraph(img):
+def generate_graph(img):
 
     # window_width = int( camera.get( cv2.CAP_PROP_FRAME_WIDTH ) )
     # window_height = int( camera.get( cv2.CAP_PROP_FRAME_HEIGHT ) )
@@ -98,43 +82,47 @@ def getGraph(img):
     Distance_Frame = [ 0.0 ] * 180
     xaxis = np.arange( 1, 181, 1 )
     Distance_Fig = plt.figure()
-    while True:
-        # read current frame
-        # _, img = camera.read()
+    # read current frame
+    # _, img = camera.read()
 
-        img = cv2.resize( img, ( int( img.shape[ 1 ] / 2 ), int( img.shape[ 0 ] / 2 ) ) )
-        img_for_crop = cv2.cvtColor( img, cv2.COLOR_BGR2RGB )
+    img = cv2.resize( img, ( int( img.shape[ 1 ] / 2 ), int( img.shape[ 0 ] / 2 ) ) )
+    img_for_crop = cv2.cvtColor( img, cv2.COLOR_BGR2RGB )
 
-        faces = face_detector.detect_faces( img )
+    faces = face_detector.detect_faces( img )
 
-        x_center = img.shape[ 0 ] / 2
-        y_center = img.shape[ 1 ] / 2
+    x_center = img.shape[ 0 ] / 2
+    y_center = img.shape[ 1 ] / 2
 
-        for index in range( len( faces ) ):
+    for index in range( len( faces ) ):
 
-            x, y, w, h = faces[ index ]
-            D = np.sqrt( ( ( x + w / 2 ) / x_center - 1 ) ** 2 + ( ( y + h / 2 ) / y_center - 1 ) ** 2 )
-            #print( x, y, w, h, D )
+        x, y, w, h = faces[ index ]
+        D = np.sqrt( ( ( x + w / 2 ) / x_center - 1 ) ** 2 + ( ( y + h / 2 ) / y_center - 1 ) ** 2 )
+        #print( x, y, w, h, D )
 
-            # show First path process on frame
-            cv2.rectangle( img, ( x, y ), ( x + w, y + h ), ( 0, 255, 0 ), 2 )
+        # show First path process on frame
+        cv2.rectangle( img, ( x, y ), ( x + w, y + h ), ( 0, 255, 0 ), 2 )
 
-        print( D )
-        Distance_Frame = Distance_Frame[1:] + [ D ]
-        print( Distance_Frame )
-        Distance_Fig = plt.figure()
-        plt.plot( xaxis, Distance_Frame, label = "Distance" )
-        plt.xlabel( 'Frames' )
-        plt.ylabel( 'Distance' )
-        plt.legend()
-        Distance_Fig.savefig( fname = "./distance_fig.png" )
-        plt.close()
+    # print( D )
+    Distance_Frame = Distance_Frame[1:] + [ D ]
+    # print( Distance_Frame )
+    Distance_Fig = plt.figure()
+    plt.plot( xaxis, Distance_Frame, label = "Distance" )
+    plt.xlabel( 'Frames' )
+    plt.ylabel( 'Distance' )
+    plt.legend()
+    Distance_Fig.savefig( fname = "./assets/imagesdistance_fig.png" )
+    plt.close()
 
-        realtime_fig = cv2.imread( "./distance_fig.png" )
-        realtime_fig = cv2.resize( realtime_fig, ( int( img.shape[ 1 ] ), int( img.shape[ 0 ] ) ) )
-        img_v = cv2.vconcat( [ img, realtime_fig ] )
+    realtime_fig = cv2.imread( "./assets/images/distance_fig.png" )
+    realtime_fig = cv2.resize( realtime_fig, ( int( img.shape[ 1 ] ), int( img.shape[ 0 ] ) ) )
+    img_v = cv2.vconcat( [ img, realtime_fig ] )
 
-        return cv2.imencode( '.jpg', img_v )[ 1 ].tobytes()
+    binFrame = getGraph(cv2.imencode( '.jpg', img_v )[ 1 ].tobytes())
+    graph = base64.b64encode(binFrame)
+    graphname = 'graph.jpg'
+    with open(graphname, 'wb') as f:
+        f.write(base64.b64decode(graph))
+    emit('imgback_'+request.sid, {'graph': graph})
 
 
 
