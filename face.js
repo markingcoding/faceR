@@ -6,7 +6,9 @@ $(function () {
         .then(stream => (videoInput.srcObject = stream));
 
     const canvasInput = document.getElementById("canvas");
-
+    // MUST set with the same width with video, if NOT crop image will lost ratio!
+    canvasInput.height = videoInput.height;
+    canvasInput.width = videoInput.width;
     const ctx = canvasInput.getContext("2d");
 
     const graph = document.getElementById("graph");
@@ -37,7 +39,6 @@ $(function () {
             const maxHeight = _.maxBy(positions, p => p[1])[1];
             const width_original = maxLeft - posX_original;
             const height_original = maxHeight - posY_original;
-            // document.getElementById('positions').innerHTML = `x=${posX_original}, y=${posY_original}, width=${width_original}, height=${height_original}`;
 
             // まゆげ以上比率、顎以下の比率
             const yPercentUp = 0.8, yPercentBottom = 0.1;
@@ -53,8 +54,6 @@ $(function () {
             posX = posX_original - (height - width_original) / 2;
             posX = posX > 0 ? posX : 0;
             width = height;
-
-            // console.log('Adjusted width=' + width, 'height=', height);
 
             // Ajust to get more Ears
             // if (height_original > width_original) {
@@ -114,14 +113,6 @@ $(function () {
 
     function receiveResultFromServer() {
 
-        // returns a frame encoded in base64
-        // const getFrame = () => {
-        //     const canvas = document.createElement('canvas');
-        //     canvas.width = video.videoWidth;
-        //     canvas.height = video.videoHeight;
-        //     canvas.getContext('2d').drawImage(video, 0, 0);
-        //     return canvas.toDataURL('image/png');
-        // };
         let sid = "";
         ws.on("connect", () => {
             //console.log(`Connected to ${WS_URL}`);
@@ -177,9 +168,8 @@ $(function () {
     }
 
     function crop_video() {
-        const r = 1.4; // FIXME why?
-        const cropWidth = width * r;
-        const cropHeight = height * r;
+        const cropWidth = width;
+        const cropHeight = height;
         // 画像切り取り
         var canvasTmp = document.createElement("canvas");
         canvasTmp.width = cropWidth;
@@ -192,20 +182,6 @@ $(function () {
         ctxTmp.drawImage(videoInput,
             posX, posY, cropWidth, cropHeight,
             0, 0, cropWidth, cropHeight)
-        // ctxTmp.putImageData(
-        //     trackerImgData,
-        //     0, 0);
-        // ctxTmp.putImageData(
-        //     trackerImgData,
-        //     0, 0);
-        // console.log('image width=' + cropWidth, 'height=', cropHeight);
-        // if (width > height) {
-        //     croppedImageTag.setAttribute('width', width + 'px');
-        //     croppedImageTag.setAttribute('height', width + 'px');
-        // } else if (height > 0) {
-        //     croppedImageTag.setAttribute('width', height + 'px');
-        //     croppedImageTag.setAttribute('height', height + 'px');
-        // }
         croppedImage = canvasTmp.toDataURL("image/jpeg", 0.8);
         croppedImageTag.setAttribute('src', croppedImage);
         // console.log('Size of crop_video:', croppedImage.length)
