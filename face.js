@@ -41,6 +41,20 @@ $(function () {
             const height_original = maxHeight - posY_original;
             // document.getElementById('positions').innerHTML = `x=${posX_original}, y=${posY_original}, width=${width_original}, height=${height_original}`;
 
+            // まゆげ以上比率、顎以下の比率
+            const yPercentUp = 0.8, yPercentBottom = 0.1;
+            let moveUp = height_original * yPercentUp;
+            moveUp = moveUp > posY_original ? posY_original : moveUp; // 天丼になったら天丼使う
+            posY = posY_original - moveUp; // Y上に移動
+
+            let moveBottom = height_original * yPercentBottom;
+            // newMaxHeight = (posY + height_original + heightBottom);
+            // heightBottom = newMaxHeight > canvasInput.height ? canvasInput.height : newMaxHeight; // 天丼になったら天丼使う
+            height = moveUp + height_original + moveBottom;
+
+            posX = posX_original - (height - width_original) / 2;
+            posX = posX > 0 ? posX : 0;
+            width = height;
             // Ajust to get more Ears
             // if (height_original > width_original) {
             //     const xPercent = 0.1, yPercent = 0.6;
@@ -52,20 +66,12 @@ $(function () {
             //     height = height_original * (1 + yPercent);
             // }
 
-            // Ajust to rect
-            if (height_original > width_original) {
-                const yPercent = 0.6;
-                let newHeight = height_original * (1 + yPercent); // 増高
-                newHeight =
-                    newHeight > canvasInput.height ? canvasInput.height : newHeight; // MAX高に超えないよう
-                const moreHeigterY =
-                    posY_original - (newHeight - height_original); // Yも増高
-                posY = moreHeigterY > 0 ? moreHeigterY : 0; // Yを枠に超えないよう
-                height = newHeight;
+            // Ajust to face
+            // width = width_original;
+            // height = width;
+            // posX = posX_original;
+            // posY = posY_original;
 
-                posX = posX_original - (height - width_original) / 2;
-                width = height;
-            }
         }
     }
     positionLoop();
