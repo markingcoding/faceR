@@ -86,6 +86,7 @@ $(function () {
         ctx.strokeRect(posX, posY, width, height); // draw red square
 
         ctx.drawImage(imageObj, posX + width - 32, posY);
+        requestAnimFrame(crop_video);
     }
     drawLoop();
 
@@ -94,7 +95,7 @@ $(function () {
     function sendCropImageToServer() {
         const FPS = 1;
         setInterval(() => {
-            ws.emit("message", crop_video());
+            ws.emit("message", resizedImage);
         }, 1000 / FPS);
     }
     sendCropImageToServer();
@@ -193,7 +194,7 @@ $(function () {
         croppedImage = canvasTmp.toDataURL("image/jpeg", 0.8);
         croppedImageTag.setAttribute('src', croppedImage);
         // console.log('Size of crop_video:', croppedImage.length)
-        resize_image(croppedImageTag, resizedImageTag)
+        resize_image(croppedImageTag, resizedImageTag);
     }
     const MAX_SEND_SIZE = 60;
     function resize_image(src, dst, type, quality) {
