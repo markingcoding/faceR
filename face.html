@@ -96,46 +96,54 @@
     </section>
 
     <section
-      class="cid-rjWzhL9yBH mbr-fullscreen"
+      class="cid-rjWzhL9yBH mbr-fullscreen "
       id="header2-15"
       style="background-image: url('assets/images/mbr-1920x1079.jpg');background-repeat: no-repeat;background-size: cover;background-position: center;margin-top:60px;"
     >
       <div
-        class="container align-center"
-        style="margin-top: -50px; position: relative;"
+        class="container col-xs-12"
+        style="position: relative;margin-top: 100px;margin-left: 150px;"
       >
         <!--<div class="row justify-content-md-center">-->
         <!--<video id="v" class="col-xs-12 col-sm-12 col-md-10 col-lg-8 col-xl-8"></video>-->
         <!--<img id="imgback" src="">-->
-        <video
-          autoplay
-          style="position: absolute;"
-          id="video"
-          width="540"
-          height="360"
-          loop
-          playsinline
-        ></video>
-        <canvas
-          id="canvas"
-          width="540"
-          height="360"
-          style="position: absolute;"
-        ></canvas>
+        <div class="col-md-6 col-lg-6">
 
+          <video
+                  autoplay
+                  id="video"
+                  width="368"
+                  height="288"
+                  loop
+                  playsinline
+                  style="position: absolute"
+          ></video>
+          <canvas
+                  id="canvas"
+                  width="368"
+                  height="288"
+                  style="position: absolute"
+          ></canvas>
+        </div>
+
+        <!--style="position: absolute;left: 120px;bottom:-80px"-->
+        <div class="d-none d-lg-block d-xl-block col-md-6 col-lg-6">
+
+          <img class=" graph"
+               src="assets/images/distance_fig.png"
+               width="368"
+               height="288"
+               style="margin-left: 700px;"
+          />
+        </div>
+      </div>
+      <div class="container col-xs-12 col-sm-12 col-md-12 d-block d-md-block d-lg-none " style="margin-top: 400px;margin-left: -50px;">
         <img
-          id="graph"
-          src="assets/images/distance_fig.png"
-          width="540"
-          height="360"
-          style="margin-left: 600px;"
+                class="graph"
+                src="assets/images/distance_fig.png"
+                width="368"
+                height="288"
         />
-        <!--<div class="mbr-white col-md-10" style="margin-top:-380px">-->
-        <!--<div class="video-block">-->
-        <!--<div><iframe class="mbr-embedded-video" src="https://www.youtube.com/embed/Pls_q2aQzHg?rel=0&amp;amp;showinfo=0&amp;autoplay=0&amp;loop=0" width="750" height="306" frameborder="0"></iframe></div>-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--</div>-->
       </div>
     </section>
 

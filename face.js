@@ -11,7 +11,8 @@ $(function () {
     canvasInput.width = videoInput.width;
     const ctx = canvasInput.getContext("2d");
 
-    const graph = document.getElementById("graph");
+    // const graph = document.getElementById("graph");
+    const graph = $(".graph");
 
     const ctracker = new clm.tracker();
     ctracker.init();

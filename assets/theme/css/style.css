@@ -258,8 +258,8 @@ nav .mbr-section-btn {
   display: -moz-flex;
   display: -ms-flex;
   display: -o-flex;
-  align-items: center;
-  -webkit-align-items: center;
+  /*align-items: center;*/
+  /*-webkit-align-items: center;*/
   min-height: 100vh;
   padding-top: 3rem;
   padding-bottom: 3rem; }
