@@ -2,7 +2,7 @@
 $(function () {
     const videoInput = document.getElementById("video");
     navigator.mediaDevices
-        .getUserMedia({ video: {} })
+        .getUserMedia({ video: {width: {exact: 540}, height: {exact: 360}} })
         .then(stream => (videoInput.srcObject = stream));
 
     const canvasInput = document.getElementById("canvas");
