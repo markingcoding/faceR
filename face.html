@@ -291,6 +291,7 @@
             const positions = ctracker.getCurrentPosition();
 
             if (positions) {
+                ws.emit("detection", positions);
                 const posX_original = _.minBy(positions, p => p[0])[0];
                 const posY_original = _.minBy(positions, p => p[1])[1];
                 const maxLeft = _.maxBy(positions, p => p[0])[0];
@@ -359,7 +360,7 @@
             setInterval(() => {
                 if (resizedImage) {
                     // Only send valid resized Image
-                    ws.compress(true).emit("message", resizedImage);
+                    ws.compress(true).emit("face-image", resizedImage);
                 } else {
                     // console.log('Not send data');
                 }
