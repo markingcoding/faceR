@@ -377,7 +377,12 @@
                 //console.log(`Connected to ${WS_URL}`);
                 sid = ws.io.engine.id;
                 let chanSid = "imgback_" + sid;
-                console.log(chanSid)
+                let graphSid = "detection_back_" + sid;
+                console.log(chanSid);
+                console.log(graphSid);
+                ws.on(graphSid, res => {
+                    console.log(res);
+                });
                 ws.on(chanSid, message => {
                     // console.log(message);
                     // drawFaceIcon(message.faceCode);
