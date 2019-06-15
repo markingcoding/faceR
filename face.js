@@ -12,7 +12,7 @@
         const ctx = canvasInput.getContext("2d");
 
         // const graph = document.getElementById("graph");
-        const graph = $("#graph");
+        const graph = $(".d3graph");
 
         const ctracker = new clm.tracker();
         ctracker.init();
@@ -140,7 +140,7 @@
                     // console.log(message);
                     // drawFaceIcon(message.faceCode);
                     console.log(message)
-                    graph.src = 'data:image/jpeg;base64,' +message.graph;
+                    // graph.src = 'data:image/jpeg;base64,' +message.graph;
                     let faceCode = message.result;
                     // 32 px png icon
                     imageObj.src =
