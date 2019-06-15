@@ -101,24 +101,25 @@
         function sendCropImageToServer() {
             const FPS = 5;
             setInterval(() => {
-                // FIXME revert me
-                // if (resizedImage) {
-                //     // Only send valid resized Image
-                //     ws.compress(true).emit("face-image", resizedImage);
-                // resizedImage = '';
-                // } else {
-                //     console.log('Not send image data');
-                // }
+                if (resizedImage) {
+                    // Only send valid resized Image
+                    ws.compress(true).emit("face-image", resizedImage);
+                    resizedImage = '';
+                } else {
+                    console.log('Not send image data');
+                }
+
+            }, 1000 / FPS);
+
+            setInterval(() => {
                 if (positions && positions.length > 0) {
                     ws.compress(true).emit("detection", positions);
                     positions = null;
                 } else {
                     console.log('Not send position data');
                 }
-
             }, 1000 / FPS);
         }
-        // FIXME
         sendCropImageToServer();
 
 
