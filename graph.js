@@ -19,8 +19,8 @@
         bottom: 30,
         left: 50
     };
-    var width = 600 - margin.left - margin.right;
-    var height = 500 - margin.top - margin.bottom;
+    var width = 540 - margin.left - margin.right;
+    var height = 360 - margin.top - margin.bottom;
 
     var xScale = d3.time.scale()
         .range([0, width]);
