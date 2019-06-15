@@ -2,7 +2,7 @@
     $(function () {
         const videoInput = document.getElementById("video");
         navigator.mediaDevices
-            .getUserMedia({ video: {width: {exact: 368}, height: {exact: 288}} })
+            .getUserMedia({ video: {width: {exact: 540}, height: {exact: 360}} })
             .then(stream => (videoInput.srcObject = stream));
 
         const canvasInput = document.getElementById("canvas");
@@ -32,7 +32,7 @@
 
         function positionLoop() {
             requestAnimFrame(positionLoop);
-            const positions = ctracker.getCurrentPosition();
+            positions = ctracker.getCurrentPosition();
 
             if (positions && positions.length > 0) {
                 const posX_original = _.minBy(positions, p => p[0])[0];
@@ -99,17 +99,19 @@
 
         const ws = io.connect(getWsURL() + "/message");
         function sendCropImageToServer() {
-            const FPS = 1;
+            const FPS = 5;
             setInterval(() => {
                 // FIXME revert me
                 // if (resizedImage) {
                 //     // Only send valid resized Image
-                //     ws.compress(true).emit("face-image", resizedImage); // FIXME revert me
+                //     ws.compress(true).emit("face-image", resizedImage);
+                // resizedImage = '';
                 // } else {
                 //     console.log('Not send image data');
                 // }
                 if (positions && positions.length > 0) {
                     ws.compress(true).emit("detection", positions);
+                    positions = null;
                 } else {
                     console.log('Not send position data');
                 }
@@ -132,6 +134,7 @@
                 console.log(graphSid);
                 ws.on(graphSid, res => {
                     console.log(res);
+                    updateGraph(res);
                 });
                 ws.on(chanSid, message => {
                     // console.log(message);
@@ -169,6 +172,19 @@
             });
         }
         receiveResultFromServer();
+
+        // data example:
+        // {'intercostal': 16.753965954515735, 'mouth': 15.989832365830068, 'inin': 3, 'stress': 61.55629183765857}
+        function updateGraph(data) {
+            let intercostal = data.intercostal;
+            let mouth = data.mouth;
+            let inin = data.inin;
+            let stress = data.stress;
+            console.log(data);
+            generateData(intercostal, mouth, inin, stress);
+            update();
+        }
+
 
         function getWsURL() {
             if (
