@@ -2,3 +2,4 @@ faceimg/*
 *.pyc
 test.jpg
 assets/imagesdistance_fig.png
+.DS_Store
