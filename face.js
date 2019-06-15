@@ -27,19 +27,14 @@
         let croppedImage = "";
 
         const resizedImageTag = document.getElementById("resizedImage");
-        let resizedImage = "", isFirst = true;
+        let resizedImage = "";
+        let positions = null;
 
         function positionLoop() {
             requestAnimFrame(positionLoop);
             const positions = ctracker.getCurrentPosition();
 
-            if (positions) {
-                // FIXME
-                if (isFirst) {
-                    isFirst = false;
-                    ws.emit("detection", positions);
-                    return;
-                }
+            if (positions && positions.length > 0) {
                 const posX_original = _.minBy(positions, p => p[0])[0];
                 const posY_original = _.minBy(positions, p => p[1])[1];
                 const maxLeft = _.maxBy(positions, p => p[0])[0];
@@ -106,17 +101,23 @@
         function sendCropImageToServer() {
             const FPS = 1;
             setInterval(() => {
-                if (resizedImage) {
-                    // Only send valid resized Image
-                    ws.compress(true).emit("face-image", resizedImage);
+                // FIXME revert me
+                // if (resizedImage) {
+                //     // Only send valid resized Image
+                //     ws.compress(true).emit("face-image", resizedImage); // FIXME revert me
+                // } else {
+                //     console.log('Not send image data');
+                // }
+                if (positions && positions.length > 0) {
+                    ws.compress(true).emit("detection", positions);
                 } else {
-                    // console.log('Not send data');
+                    console.log('Not send position data');
                 }
 
             }, 1000 / FPS);
         }
         // FIXME
-        // sendCropImageToServer();
+        sendCropImageToServer();
 
 
         function receiveResultFromServer() {
