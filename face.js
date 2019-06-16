@@ -85,10 +85,10 @@
         function drawLoop() {
             requestAnimFrame(drawLoop);
             ctx.clearRect(0, 0, canvasInput.width, canvasInput.height);
-            ctracker.draw(canvasInput); //draw green face line
+            // ctracker.draw(canvasInput); //draw green face line
             // Draw my rect
             ctx.strokeStyle = "red";
-            ctx.strokeRect(posX, posY, width, height); // draw red square
+            // ctx.strokeRect(posX, posY, width, height); // draw red square
             // console.log('Rect width=' + width, 'height=', height);
 
             ctx.drawImage(imageObj, posX + width - 32, posY);
