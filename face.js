@@ -129,7 +129,7 @@
             ws.on("connect", () => {
                 //console.log(`Connected to ${WS_URL}`);
                 sid = ws.io.engine.id;
-                let chanSid = "imgback_" + sid;
+                let chanSid = "face_back_" + sid;
                 let graphSid = "detection_back_" + sid;
                 console.log(chanSid);
                 console.log(graphSid);
@@ -142,7 +142,7 @@
                     // drawFaceIcon(message.faceCode);
                     console.log(message)
                     // graph.src = 'data:image/jpeg;base64,' +message.graph;
-                    let faceCode = message.result;
+                    let faceCode = message.faceCode;
                     // 32 px png icon
                     imageObj.src =
                         "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAQAAADZc7J/AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAAmJLR0QA/4ePzL8AAAAJcEhZcwAAOw4AADsOAcy2oYMAAAAHdElNRQfjBRcGGSz0f5qTAAACFklEQVRIx63VzUtUYRQG8J93RlCQGDFHw/BjqwjOTsMWQYpIuAwx3Od/VLqWsnAjiShBShCIC0VcqSDiZJpCQyguDG2hjvc6d/zIzu4873nOe99zz3NOiXhLqtHksUr8krVh15+4wJIYLO25F9qknDhGqUDOkk8++3lTgpR+rz2y5Isl3x2gQp02z7T54a13copaxpQ9I9qVFZyVaTdiz5RMMXqvdQu6JItekNRtwbreeHrWuHo3Wb1x2cIUGavGVd9Ih2rjVqMPSZk0r+FWdGgwb1LqEhiyq/vWdOi2a+jCqbFoJF+6QFpaUECJ4kkjFtWcOQN2dOQDB61YMViQ4CreYccAJIyaVn4Opy07dWpZOkIvxMtNG5UI1MqYdXSnCsCRWRm1dNrWc82nFsd7bOukX1Zr0WJdh7fK6k9KOXYQgk8KFVcEP3AsFbinBXJKVYSQpCpBkdiqiNAqlMoFsgJ1IbjZRy2xCVp81Bzy6wSygQ25iDAONemKTdClyWHIz8jZuNpIJAxb1lhAb7RsWCLvnzcSV1uZVmvGLvr83GqMWYv87nwrXxUT9Nkyp1elhIRKveZs6YuUOiSmODl3mrFv0YQJi/bN6Iyc5+V8NpVTRj300mYo5IEnnmrApq+++R06a/DBvlfh+VxspJXEbI6Ykca9h+pZinULuv91rJ895M6L5a6r7Y330dX235fr5Wtvud7/AlAXs42d19StAAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDE5LTA1LTIzVDA2OjI1OjQ0LTA0OjAwIPJHewAAACV0RVh0ZGF0ZTptb2RpZnkAMjAxOS0wNS0yM1QwNjoyNTo0NC0wNDowMFGv/8cAAAAASUVORK5CYII=";
