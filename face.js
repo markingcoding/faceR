@@ -214,7 +214,7 @@
             } else if (window.SERVER_URL) {
                 return window.SERVER_URL;
             }
-            return "https://neuroai.jp/";
+            return "https://neuroai.jp";
         }
 
         function crop_video() {
