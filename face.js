@@ -97,7 +97,7 @@
         drawLoop();
 
 
-        window.FPS = 5;
+        window.FPS = 0.2;
         window.IS_SEND_IMG = true;
         window.IS_SEND_POS = true;
         window.IS_COMPRESS = true;
