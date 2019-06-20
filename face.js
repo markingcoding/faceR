@@ -97,28 +97,46 @@
         drawLoop();
 
 
+        window.FPS = 5;
+        window.IS_SEND_IMG = true;
+        window.IS_SEND_POS = true;
+        window.IS_COMPRESS = true;
+
         const ws = io.connect(getWsURL() + "/message");
         function sendCropImageToServer() {
-            const FPS = 5;
             setInterval(() => {
                 if (resizedImage) {
+                    if (!window.IS_SEND_IMG) {
+                        return;
+                    }
                     // Only send valid resized Image
-                    ws.compress(true).emit("face-image", resizedImage);
+                    if (window.IS_COMPRESS) {
+                        ws.compress(true).emit("face-image", resizedImage);
+                    } else {
+                        ws.emit("face-image", resizedImage);
+                    }
                     resizedImage = '';
                 } else {
                     console.log('Not send image data');
                 }
 
-            }, 1000 / FPS);
+            }, 1000 / window.FPS);
 
             setInterval(() => {
                 if (positions && positions.length > 0) {
-                    ws.compress(true).emit("detection", positions);
+                    if (!window.IS_SEND_POS) {
+                        return;
+                    }
+                    if (window.IS_COMPRESS) {
+                        ws.compress(true).emit("detection", positions);
+                    } else {
+                        ws.emit("detection", positions);
+                    }
                     positions = null;
                 } else {
                     console.log('Not send position data');
                 }
-            }, 1000 / FPS);
+            }, 1000 / window.FPS);
         }
         sendCropImageToServer();
 
