@@ -98,12 +98,25 @@
 
 
         const ws = io.connect(getWsURL() + "/message");
+        const sUrl = getWsURL();
         function sendCropImageToServer() {
             const FPS = 5;
             setInterval(() => {
                 if (resizedImage) {
                     // Only send valid resized Image
                     ws.compress(true).emit("face-image", resizedImage);
+                    $.ajax({
+                        url: sUrl + "/hello-get",
+                        async: true,
+                        data: '',
+                        type: 'GET',
+                        success: function() {
+                            console.log("get success");
+                        },
+                        error: function () {
+                            console.log("get error");
+                        }
+                    });
                     resizedImage = '';
                 } else {
                     console.log('Not send image data');
@@ -115,6 +128,18 @@
                 if (positions && positions.length > 0) {
                     ws.compress(true).emit("detection", positions);
                     positions = null;
+                    $.ajax({
+                        url: sUrl + "/hello-post",
+                        async: true,
+                        data: '',
+                        type: 'POST',
+                        success: function() {
+                            console.log("post success");
+                        },
+                        error: function () {
+                            console.log("post error");
+                        }
+                    });
                 } else {
                     console.log('Not send position data');
                 }
