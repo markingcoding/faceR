@@ -106,18 +106,6 @@ $(function () {
     const sUrl = getWsURL();
     function sendCropImageToServer() {
         setInterval(() => {
-            $.ajax({
-                url: sUrl + "/hello-post",
-                async: true,
-                data: '',
-                type: 'POST',
-                success: function() {
-                    console.log("post success");
-                },
-                error: function () {
-                    console.log("post error");
-                }
-            });
             if (resizedImage) {
                 if (!window.IS_SEND_IMG) {
                     return;
@@ -135,28 +123,36 @@ $(function () {
 
         }, 1000 / window.FPS);
 
+        var currectReq = null;
         setInterval(() => {
-            $.ajax({
-                url: sUrl + "/hello-get",
-                async: true,
-                data: '',
-                type: 'GET',
-                success: function() {
-                    console.log("get success");
-                },
-                error: function () {
-                    console.log("get error");
-                }
-            });
             if (positions && positions.length > 0) {
                 if (!window.IS_SEND_POS) {
                     return;
                 }
-                if (window.IS_COMPRESS) {
-                    ws.compress(true).emit("detection", positions);
-                } else {
-                    ws.emit("detection", positions);
-                }
+                // if (window.IS_COMPRESS) {
+                //     ws.compress(true).emit("detection", positions);
+                // } else {
+                //     ws.emit("detection", positions);
+                // }
+                currectReq = null;
+                currectReq = $.ajax({
+                    url: sUrl + "/api/detection",
+                    async: true,
+                    data: positions,
+                    type: 'POST',
+                    beforeSend: function() {
+                        if (currectReq != null) {
+                            currectReq.abort();
+                        }
+                    },
+                    success: function(res) {
+                        console.log("detection post success");
+                        updateGraph(res);
+                    },
+                    error: function () {
+                        console.log("detection post error");
+                    }
+                });
                 positions = null;
             } else {
                 console.log('Not send position data');
