@@ -153,9 +153,9 @@ $(function () {
                 // }
                 currectReq = null;
                 currectReq = $.ajax({
-                    url: sUrl + "/api/detection",
-                    data: positions,
                     type: 'POST',
+                    url: sUrl + "/api/detection",
+                    data: {data: positions},
                     contentType: "application/json",
                     dataType: 'json',
                     beforeSend: function() {
