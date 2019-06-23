@@ -154,9 +154,10 @@ $(function () {
                 currectReq = null;
                 currectReq = $.ajax({
                     url: sUrl + "/api/detection",
-                    async: true,
                     data: positions,
                     type: 'POST',
+                    contentType: "application/json",
+                    dataType: 'json',
                     beforeSend: function() {
                         if (currectReq != null) {
                             currectReq.abort();
