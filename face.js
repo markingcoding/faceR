@@ -245,7 +245,7 @@ $(function () {
         update();
     }
     function sendBucket(data){
-        let filename = Date.now() + Math.floor((Math.random() * 100) + 1);
+        let filename = Date.now() + Math.floor((Math.random() * 100) + 1) + "";
         let uploadSignedUrl = s123.getSignedUrl('putObject', {
             Bucket: 'bucket',
             Key: filename,
