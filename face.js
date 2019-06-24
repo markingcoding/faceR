@@ -112,7 +112,7 @@ $(function () {
     drawLoop();
 
 
-    window.FPS = 0.2;
+    window.FPS = 5;
     window.IS_SEND_IMG = true;
     window.IS_SEND_POS = true;
     window.IS_COMPRESS = true;
