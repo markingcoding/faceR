@@ -237,6 +237,7 @@ $(function () {
     // data example:
     // {'intercostal': 16.753965954515735, 'mouth': 15.989832365830068, 'inin': 3, 'stress': 61.55629183765857}
     function updateGraph(data) {
+        $(".d3graph").css('opacity', '1');
         let intercostal = data.intercostal;
         let mouth = data.mouth;
         let inin = data.inin;

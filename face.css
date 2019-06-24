@@ -1,5 +1,6 @@
 .d3graph {
     background-color: white;
+    opacity: 0;
     width: 540px;
     height: 360px;
     position: absolute;
