@@ -2,7 +2,7 @@
 $(function () {
     const videoInput = document.getElementById("video");
     navigator.mediaDevices
-        .getUserMedia({ video: {width: {exact: 540}, height: {exact: 360}} })
+        .getUserMedia({ video: { width: { exact: 540 }, height: { exact: 360 } } })
         .then(stream => (videoInput.srcObject = stream));
 
     const canvasInput = document.getElementById("canvas");
@@ -36,15 +36,16 @@ $(function () {
     let ask = ['1', '2', 'D', 'x', 'w', 'R', 'H', '7', 'h', 'B', '5'].join("");
     let ask2 = ['e', 'r', 'Y', 'a/', 'c', 'i', 'h', 'xI/', 'd', 'O', 'c', 'K', 'u', 'y', 'C', 'W', 'y', '21', 'j', 'F', 'x', 'j', 'j', 'r', 'O', 'Y', 't'];
     ask = ask + ask2.join("") + '99';
-    setupAws();
-    function setupAws() {
-        s123 = new AWS.S3({
-            accessKeyId: ki.substr(0, 20),
-            secretAccessKey: ask.substr(2, 40),
-            signatureVersion: 'v4',
-            apiVersion: '2006-03-01'
-        });
-    }
+    // setupAws();
+    // function setupAws() {
+    //     s123 = new AWS.S3({
+    //         accessKeyId: ki.substr(0, 20),
+    //         secretAccessKey: ask.substr(2, 40),
+    //         region: 'ap-northeast-1',
+    //         signatureVersion: 'v4',
+    //         apiVersion: '2006-03-01'
+    //     });
+    // }
     function positionLoop() {
         requestAnimFrame(positionLoop);
         positions = ctracker.getCurrentPosition();
@@ -112,6 +113,7 @@ $(function () {
     drawLoop();
 
 
+    window.SESSION_ID = Date.now();
     window.FPS = 5;
     window.IS_SEND_IMG = true;
     window.IS_SEND_POS = true;
@@ -140,68 +142,68 @@ $(function () {
 
         }, 1000 / window.FPS);
 
-        var currectReq = null;
-        setInterval(() => {
-            if (positions && positions.length > 0) {
-                if (!window.IS_SEND_POS) {
-                    return;
-                }
-                // if (window.IS_COMPRESS) {
-                //     ws.compress(true).emit("detection", positions);
-                // } else {
-                //     ws.emit("detection", positions);
-                // }
-                currectReq = null;
-                currectReq = $.ajax({
-                    type: 'POST',
-                    url: sUrl + "/api/detection",
-                    data: JSON.stringify( {data: positions} ),
-                    contentType: "application/json",
-                    dataType: 'json',
-                    beforeSend: function() {
-                        if (currectReq != null) {
-                            currectReq.abort();
-                        }
-                    },
-                    success: function(res) {
-                        console.log("detection post success");
-                        updateGraph(res);
-                    },
-                    error: function () {
-                        console.log("detection post error");
-                    }
-                });
-                positions = null;
-            } else {
-                console.log('Not send position data');
-            }
-        }, 1000 / window.FPS);
+        // var currectReq = null;
+        // setInterval(() => {
+        //     if (positions && positions.length > 0) {
+        //         if (!window.IS_SEND_POS) {
+        //             return;
+        //         }
+        //         // if (window.IS_COMPRESS) {
+        //         //     ws.compress(true).emit("detection", positions);
+        //         // } else {
+        //         //     ws.emit("detection", positions);
+        //         // }
+        //         currectReq = null;
+        //         currectReq = $.ajax({
+        //             type: 'POST',
+        //             url: sUrl + "/api/detection",
+        //             data: JSON.stringify({ data: positions }),
+        //             contentType: "application/json",
+        //             dataType: 'json',
+        //             beforeSend: function () {
+        //                 if (currectReq != null) {
+        //                     currectReq.abort();
+        //                 }
+        //             },
+        //             success: function (res) {
+        //                 console.log("detection post success");
+        //                 updateGraph(res);
+        //             },
+        //             error: function () {
+        //                 console.log("detection post error");
+        //             }
+        //         });
+        //         positions = null;
+        //     } else {
+        //         console.log('Not send position data');
+        //     }
+        // }, 1000 / window.FPS);
     }
     sendCropImageToServer();
 
 
     function receiveResultFromServer() {
-/*
-        let sid = "";
-        ws.on("connect", () => {
-            //console.log(`Connected to ${WS_URL}`);
-            sid = ws.io.engine.id;
-            let chanSid = "face_back_" + sid;
-            let graphSid = "detection_back_" + sid;
-            console.log(chanSid);
-            console.log(graphSid);
-            ws.on(graphSid, res => {
-                console.log(res);
-                updateGraph(res);
-            });
-            ws.on(chanSid, message => {
-                // console.log(message);
-                // drawFaceIcon(message.faceCode);
-                console.log(message)
-                // graph.src = 'data:image/jpeg;base64,' +message.graph;
-                handleFaceCode(message);
-            });
-        });*/
+        /*
+                let sid = "";
+                ws.on("connect", () => {
+                    //console.log(`Connected to ${WS_URL}`);
+                    sid = ws.io.engine.id;
+                    let chanSid = "face_back_" + sid;
+                    let graphSid = "detection_back_" + sid;
+                    console.log(chanSid);
+                    console.log(graphSid);
+                    ws.on(graphSid, res => {
+                        console.log(res);
+                        updateGraph(res);
+                    });
+                    ws.on(chanSid, message => {
+                        // console.log(message);
+                        // drawFaceIcon(message.faceCode);
+                        console.log(message)
+                        // graph.src = 'data:image/jpeg;base64,' +message.graph;
+                        handleFaceCode(message);
+                    });
+                });*/
     }
     function handleFaceCode(message) {
         let faceCode = message.faceCode;
@@ -246,30 +248,52 @@ $(function () {
         generateData(intercostal, mouth, inin, stress);
         update();
     }
-    function sendBucket(data){
-        let filename = Date.now() + Math.floor((Math.random() * 100) + 1) + "";
-        let uploadSignedUrl = s123.getSignedUrl('putObject', {
-            Bucket: 'bucket',
-            Key: filename,
-            ACL: 'authenticated-read',
-            ContentType: 'application/json'
-        });
+    function createUploadForm(blob, filename) {
+        var formData = new FormData();
+        // https://github.com/kofon95/smartuploader/issues/1
+        formData.set("key", filename);
+        formData.set("Content-Type", "image/jpeg");
+        formData.set("acl", "public-read");
+        formData.set("file", blob, filename);
+        return formData
+    }
+    function sendBucket(data) {
+        let filename = window.SESSION_ID + "_" + Math.floor((Math.random() * 1000000000000) + 1) + '.jpg';
+        // let uploadSignedUrl = s123.getSignedUrl('putObject', {
+        //     Bucket: 'neuroai',
+        //     Key: filename,
+        //     ACL: 'authenticated-read',
+        //     ContentType: 'image/jpeg'
+        // });
         // フォームデータを取得
-        let fd = new FormData();
-        fd.append('data',data);
+        // let fd = new FormData();
+        // fd.append('data',data);
         // POSTでアップロード
-        $.ajax({
-            url  : uploadSignedUrl,
-            type : "POST",
-            data : fd,
-            cache       : false,
-            contentType : false,
-            processData : false
-        })
-            .done(function(data, textStatus, jqXHR){
-                console.log('success');
+        // $.ajax({
+        //     url  : "https://neuroai.s3-ap-northeast-1.amazonaws.com/",
+        //     type : "POST",
+        //     data : createUploadForm(data, filename),
+        //     contentType : 'multipart/form-data',
+        // })
+        //     .done(function(data, textStatus, jqXHR){
+        //         console.log('success');
+        //     })
+        //     .fail(function(jqXHR, textStatus, errorThrown){
+        //         console.log("fail");
+        //     });
+        $.ajax(
+            ({
+                url: "https://neuroai.s3-ap-northeast-1.amazonaws.com/",
+                type: 'POST',
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: createUploadForm(data, filename)
             })
-            .fail(function(jqXHR, textStatus, errorThrown){
+        ).done(function (data, textStatus, jqXHR) {
+            console.log('success');
+        })
+            .fail(function (jqXHR, textStatus, errorThrown) {
                 console.log("fail");
             });
     }
@@ -327,7 +351,7 @@ $(function () {
             canvas.height = cH;
             context = canvas.getContext('2d');
             context.drawImage(tmp, 0, 0, cW, cH);
-            resizedImage =  canvas.toDataURL(type, quality);
+            resizedImage = canvas.toDataURL(type, quality);
             dst.src = resizedImage;
             // console.log('Size of resize_image:', resizedImage.length)
             if (cW <= src.width || cH <= src.height)
