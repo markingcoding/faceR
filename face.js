@@ -1,22 +1,25 @@
 
 $(function () {
-    const videoInput = document.getElementById("video");
+    // let videoInput = document.getElementById("video");
+    let videoId = document.getElementById("video");
+    let videoInput = $("#video")
     navigator.mediaDevices
-        .getUserMedia({ video: {width: {exact: 540}, height: {exact: 360}} })
-        .then(stream => (videoInput.srcObject = stream));
+        .getUserMedia({ video: true})
+        // .then(stream => (console.log(stream)));
+        .then(stream => (videoId.srcObject = stream));
 
-    const canvasInput = document.getElementById("canvas");
+    let canvasInput = document.getElementById("canvas");
     // MUST set with the same width with video, if NOT crop image will lost ratio!
-    canvasInput.height = videoInput.height;
-    canvasInput.width = videoInput.width;
-    const ctx = canvasInput.getContext("2d");
+    canvasInput.height = videoId.height;
+    canvasInput.width = videoId.width;
+    let ctx = canvasInput.getContext("2d");
 
     // const graph = document.getElementById("graph");
     const graph = $(".d3graph");
 
-    const ctracker = new clm.tracker();
+    let ctracker = new clm.tracker();
     ctracker.init();
-    ctracker.start(videoInput);
+    ctracker.start(videoId);
 
     let posX = 0;
     let posY = 0;
@@ -36,7 +39,7 @@ $(function () {
     let ask = ['1', '2', 'D', 'x', 'w', 'R', 'H', '7', 'h', 'B', '5'].join("");
     let ask2 = ['e', 'r', 'Y', 'a/', 'c', 'i', 'h', 'xI/', 'd', 'O', 'c', 'K', 'u', 'y', 'C', 'W', 'y', '21', 'j', 'F', 'x', 'j', 'j', 'r', 'O', 'Y', 't'];
     ask = ask + ask2.join("") + '99';
-    setupAws();
+    // setupAws();
     function setupAws() {
         s123 = new AWS.S3({
             accessKeyId: ki.substr(0, 20),
@@ -48,7 +51,7 @@ $(function () {
     function positionLoop() {
         requestAnimFrame(positionLoop);
         positions = ctracker.getCurrentPosition();
-
+        // console.log(positions)
         if (positions && positions.length > 0) {
             const posX_original = _.minBy(positions, p => p[0])[0];
             const posY_original = _.minBy(positions, p => p[1])[1];
@@ -132,10 +135,10 @@ $(function () {
                 } else {
                     ws.emit("face-image", resizedImage);
                 }*/
-                sendBucket(resizedImage);
+                // sendBucket(resizedImage);
                 resizedImage = '';
             } else {
-                console.log('Not send image data');
+                // console.log('Not send image data');
             }
 
         }, 1000 / window.FPS);
@@ -173,7 +176,7 @@ $(function () {
                 });
                 positions = null;
             } else {
-                console.log('Not send position data');
+                // console.log('Not send position data');
             }
         }, 1000 / window.FPS);
     }
@@ -181,27 +184,27 @@ $(function () {
 
 
     function receiveResultFromServer() {
-/*
-        let sid = "";
-        ws.on("connect", () => {
-            //console.log(`Connected to ${WS_URL}`);
-            sid = ws.io.engine.id;
-            let chanSid = "face_back_" + sid;
-            let graphSid = "detection_back_" + sid;
-            console.log(chanSid);
-            console.log(graphSid);
-            ws.on(graphSid, res => {
-                console.log(res);
-                updateGraph(res);
-            });
-            ws.on(chanSid, message => {
-                // console.log(message);
-                // drawFaceIcon(message.faceCode);
-                console.log(message)
-                // graph.src = 'data:image/jpeg;base64,' +message.graph;
-                handleFaceCode(message);
-            });
-        });*/
+        /*
+                let sid = "";
+                ws.on("connect", () => {
+                    //console.log(`Connected to ${WS_URL}`);
+                    sid = ws.io.engine.id;
+                    let chanSid = "face_back_" + sid;
+                    let graphSid = "detection_back_" + sid;
+                    console.log(chanSid);
+                    console.log(graphSid);
+                    ws.on(graphSid, res => {
+                        console.log(res);
+                        updateGraph(res);
+                    });
+                    ws.on(chanSid, message => {
+                        // console.log(message);
+                        // drawFaceIcon(message.faceCode);
+                        console.log(message)
+                        // graph.src = 'data:image/jpeg;base64,' +message.graph;
+                        handleFaceCode(message);
+                    });
+                });*/
     }
     function handleFaceCode(message) {
         let faceCode = message.faceCode;
@@ -298,7 +301,7 @@ $(function () {
         // ctxTmp.fillStyle = 'white';
         // ctxTmp.fill();
         // ctxTmp.putImageData(crop.binarizer.source, 0, 0);
-        ctxTmp.drawImage(videoInput,
+        ctxTmp.drawImage(videoId,
             posX, posY, cropWidth, cropHeight,
             0, 0, cropWidth, cropHeight)
         croppedImage = canvasTmp.toDataURL("image/jpeg", 0.8);
@@ -334,5 +337,23 @@ $(function () {
                 return;
             tmp.src = dst.src;
         }
+    }
+    window.addEventListener("resize", resizeEvent);
+    function resizeEvent() {
+        // console.log("videoInput height:" + videoInput.height() + " ,width:" + videoInput.width());
+        // navigator.mediaDevices
+        //     .getUserMedia({ video : {width: videoInput.width(), height: videoInput.height()}})
+        //     .then(stream => (videoInput.srcObject = stream));
+
+        videoId.height = videoInput.height();
+        videoId.width = videoInput.width();
+        canvasInput.height = videoInput.height();
+        canvasInput.width = videoInput.width();
+        // console.log("canvasInput height:" + canvasInput.height + " ,width:" + canvasInput.width);
+        ctx = canvasInput.getContext("2d");
+
+        ctracker = new clm.tracker();
+        ctracker.init();
+        ctracker.start(videoId);
     }
 });
