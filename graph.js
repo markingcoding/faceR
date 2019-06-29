@@ -12,71 +12,85 @@
         };
         dataset.push(data)
     }
-    //xŽ²‚ÍŽžŠÔ‚ÌƒXƒP[ƒ‹‚É‚È‚é‚æ‚¤‚ÉÝ’è
-    var margin = {
+    const margin = {
         top: 30,
         right: 50,
         bottom: 30,
         left: 50
     };
-    var width = 540 - margin.left - margin.right;
-    var height = 360 - margin.top - margin.bottom;
+    const videoInput = $("#video");
+    let width;
+    let height;
+    let svg;
+    let xScale;
+    let yScale;
+    let xAxis;
+    let yAxis;
+    let line1;
+    let line2;
+    let line3;
+    let line4;
+    function initGraph() {
+        $(".d3graph").css('opacity', '0');
+        d3.select("svg").remove();
+        width = videoInput.width() - margin.left - margin.right;
+        height = videoInput.prop('scrollHeight') - margin.top - margin.bottom;
+        xScale = d3.time.scale()
+            .range([0, width]);
 
-    var xScale = d3.time.scale()
-        .range([0, width]);
+        yScale = d3.scale.linear()
+            .range([height, 0])
+            .domain([0, 10]);
 
-    var yScale = d3.scale.linear()
-        .range([height, 0])
-        .domain([0, 10]);
+        xAxis = d3.svg.axis()
+            .scale(xScale)
+            .orient("bottom")
+            .ticks(10)
+            .tickFormat(d3.time.format('%M:%S'));
 
-    var xAxis = d3.svg.axis()
-        .scale(xScale)
-        .orient("bottom")
-        .ticks(10)
-        .tickFormat(d3.time.format('%M:%S'));
+        yAxis = d3.svg.axis()
+            .scale(yScale)
+            .orient("left");
 
-    var yAxis = d3.svg.axis()
-        .scale(yScale)
-        .orient("left");
-
-    var line1 = d3.svg.line()
-        .x(function (d) {
-            return xScale(d.time);
-        })
-        .y(function (d) {
-            return yScale(d.intercostal);
-        })
-        .interpolate("cardinal");
-    var line2 = d3.svg.line()
-        .x(function (d) {
-            return xScale(d.time);
-        })
-        .y(function (d) {
-            return yScale(d.mouth);
-        })
-        .interpolate("cardinal");
-    var line3 = d3.svg.line()
-        .x(function (d) {
-            return xScale(d.time);
-        })
-        .y(function (d) {
-            return yScale(d.inin);
-        })
-        .interpolate("cardinal");
-    var line4 = d3.svg.line()
-        .x(function (d) {
-            return xScale(d.time);
-        })
-        .y(function (d) {
-            return yScale(d.stress);
-        })
-        .interpolate("cardinal");
-    var svg = d3.selectAll(".d3graph").append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-        .append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
+        line1 = d3.svg.line()
+            .x(function (d) {
+                return xScale(d.time);
+            })
+            .y(function (d) {
+                return yScale(d.intercostal);
+            })
+            .interpolate("cardinal");
+        line2 = d3.svg.line()
+            .x(function (d) {
+                return xScale(d.time);
+            })
+            .y(function (d) {
+                return yScale(d.mouth);
+            })
+            .interpolate("cardinal");
+        line3 = d3.svg.line()
+            .x(function (d) {
+                return xScale(d.time);
+            })
+            .y(function (d) {
+                return yScale(d.inin);
+            })
+            .interpolate("cardinal");
+        line4 = d3.svg.line()
+            .x(function (d) {
+                return xScale(d.time);
+            })
+            .y(function (d) {
+                return yScale(d.stress);
+            })
+            .interpolate("cardinal");
+        svg = d3.selectAll(".d3graph").append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    }
+    initGraph();
     function update() {
         if (dataset.length > width / 20) {
             dataset.shift();

@@ -10,8 +10,11 @@ $(function () {
 
     let canvasInput = document.getElementById("canvas");
     // MUST set with the same width with video, if NOT crop image will lost ratio!
-    canvasInput.height = videoId.height;
-    canvasInput.width = videoId.width;
+
+    videoId.height = videoInput.height();
+    videoId.width = videoInput.width();
+    canvasInput.height = videoInput.height();
+    canvasInput.width = videoInput.width();
     let ctx = canvasInput.getContext("2d");
 
     // const graph = document.getElementById("graph");
@@ -167,7 +170,7 @@ $(function () {
                         }
                     },
                     success: function(res) {
-                        console.log("detection post success");
+                        // console.log("detection post success");
                         updateGraph(res);
                     },
                     error: function () {
@@ -245,7 +248,7 @@ $(function () {
         let mouth = data.mouth;
         let inin = data.inin;
         let stress = data.stress;
-        console.log(data);
+        // console.log(data);
         generateData(intercostal, mouth, inin, stress);
         update();
     }
@@ -349,11 +352,12 @@ $(function () {
         videoId.width = videoInput.width();
         canvasInput.height = videoInput.height();
         canvasInput.width = videoInput.width();
-        // console.log("canvasInput height:" + canvasInput.height + " ,width:" + canvasInput.width);
+        console.log("canvasInput height:" + canvasInput.height + " ,width:" + canvasInput.width);
         ctx = canvasInput.getContext("2d");
 
         ctracker = new clm.tracker();
         ctracker.init();
         ctracker.start(videoId);
+        initGraph();
     }
 });
