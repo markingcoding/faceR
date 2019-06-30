@@ -32,6 +32,10 @@
     let line4;
     let heightFix = 70
     let d3graph = $(".d3graph")
+    let xAxisCount = 0;
+    function roundFun(value, n) {
+        return Math.round(value*Math.pow(10,n))/Math.pow(10,n);
+    }
     function initGraph() {
         d3graph.css('opacity', '0');
         d3graph.width(videoInput.width())
@@ -51,7 +55,14 @@
             .scale(xScale)
             .orient("bottom")
             .ticks(10)
-            .tickFormat(d3.time.format('%M:%S'));
+            .tickFormat(function () {
+                xAxisCount = xAxisCount + 0.2;
+                if (xAxisCount >= 60) {
+                    xAxisCount = 0;
+                }
+                return roundFun(xAxisCount, 1);
+            });
+            // .tickFormat(roundFun(xAxisCount, 1));
 
         yAxis = d3.svg.axis()
             .scale(yScale)

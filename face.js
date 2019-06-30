@@ -341,7 +341,12 @@ $(function () {
         }
     }
     window.addEventListener("resize", resizeEvent);
+    let beforeHeight = videoInput.height();
     function resizeEvent() {
+        if (beforeHeight == videoInput.width()) {
+            return;
+        }
+        beforeHeight = videoInput.height();
         videoId.height = videoInput.height();
         videoId.width = videoInput.width();
         canvasInput.height = videoInput.height();
