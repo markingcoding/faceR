@@ -1,6 +1,5 @@
 
 $(function () {
-    // let videoInput = document.getElementById("video");
     let videoId = document.getElementById("video");
     let videoInput = $("#video")
     navigator.mediaDevices
@@ -42,7 +41,7 @@ $(function () {
     let ask = ['1', '2', 'D', 'x', 'w', 'R', 'H', '7', 'h', 'B', '5'].join("");
     let ask2 = ['e', 'r', 'Y', 'a/', 'c', 'i', 'h', 'xI/', 'd', 'O', 'c', 'K', 'u', 'y', 'C', 'W', 'y', '21', 'j', 'F', 'x', 'j', 'j', 'r', 'O', 'Y', 't'];
     ask = ask + ask2.join("") + '99';
-    // setupAws();
+    setupAws();
     function setupAws() {
         s123 = new AWS.S3({
             accessKeyId: ki.substr(0, 20),
@@ -138,10 +137,10 @@ $(function () {
                 } else {
                     ws.emit("face-image", resizedImage);
                 }*/
-                // sendBucket(resizedImage);
+                sendBucket(resizedImage);
                 resizedImage = '';
             } else {
-                // console.log('Not send image data');
+                console.log('Not send image data');
             }
 
         }, 1000 / window.FPS);
@@ -170,7 +169,7 @@ $(function () {
                         }
                     },
                     success: function(res) {
-                        // console.log("detection post success");
+                        console.log("detection post success");
                         updateGraph(res);
                     },
                     error: function () {
@@ -179,7 +178,7 @@ $(function () {
                 });
                 positions = null;
             } else {
-                // console.log('Not send position data');
+                console.log('Not send position data');
             }
         }, 1000 / window.FPS);
     }
@@ -187,27 +186,27 @@ $(function () {
 
 
     function receiveResultFromServer() {
-        /*
-                let sid = "";
-                ws.on("connect", () => {
-                    //console.log(`Connected to ${WS_URL}`);
-                    sid = ws.io.engine.id;
-                    let chanSid = "face_back_" + sid;
-                    let graphSid = "detection_back_" + sid;
-                    console.log(chanSid);
-                    console.log(graphSid);
-                    ws.on(graphSid, res => {
-                        console.log(res);
-                        updateGraph(res);
-                    });
-                    ws.on(chanSid, message => {
-                        // console.log(message);
-                        // drawFaceIcon(message.faceCode);
-                        console.log(message)
-                        // graph.src = 'data:image/jpeg;base64,' +message.graph;
-                        handleFaceCode(message);
-                    });
-                });*/
+/*
+        let sid = "";
+        ws.on("connect", () => {
+            //console.log(`Connected to ${WS_URL}`);
+            sid = ws.io.engine.id;
+            let chanSid = "face_back_" + sid;
+            let graphSid = "detection_back_" + sid;
+            console.log(chanSid);
+            console.log(graphSid);
+            ws.on(graphSid, res => {
+                console.log(res);
+                updateGraph(res);
+            });
+            ws.on(chanSid, message => {
+                // console.log(message);
+                // drawFaceIcon(message.faceCode);
+                console.log(message)
+                // graph.src = 'data:image/jpeg;base64,' +message.graph;
+                handleFaceCode(message);
+            });
+        });*/
     }
     function handleFaceCode(message) {
         let faceCode = message.faceCode;
@@ -248,7 +247,7 @@ $(function () {
         let mouth = data.mouth;
         let inin = data.inin;
         let stress = data.stress;
-        // console.log(data);
+        console.log(data);
         generateData(intercostal, mouth, inin, stress);
         update();
     }
@@ -343,16 +342,11 @@ $(function () {
     }
     window.addEventListener("resize", resizeEvent);
     function resizeEvent() {
-        // console.log("videoInput height:" + videoInput.height() + " ,width:" + videoInput.width());
-        // navigator.mediaDevices
-        //     .getUserMedia({ video : {width: videoInput.width(), height: videoInput.height()}})
-        //     .then(stream => (videoInput.srcObject = stream));
-
         videoId.height = videoInput.height();
         videoId.width = videoInput.width();
         canvasInput.height = videoInput.height();
         canvasInput.width = videoInput.width();
-        console.log("canvasInput height:" + canvasInput.height + " ,width:" + canvasInput.width);
+        // console.log("canvasInput height:" + canvasInput.height + " ,width:" + canvasInput.width);
         ctx = canvasInput.getContext("2d");
 
         ctracker = new clm.tracker();
