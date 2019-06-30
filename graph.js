@@ -30,11 +30,16 @@
     let line2;
     let line3;
     let line4;
+    let heightFix = 70
+    let d3graph = $(".d3graph")
     function initGraph() {
-        $(".d3graph").css('opacity', '0');
+        d3graph.css('opacity', '0');
+        d3graph.width(videoInput.width())
+        d3graph.height(videoInput.height() + heightFix)
         d3.select("svg").remove();
         width = videoInput.width() - margin.left - margin.right;
-        height = videoInput.prop('scrollHeight') - margin.top - margin.bottom;
+        height = videoInput.height() + heightFix - margin.top - margin.bottom;
+        heightFix = 0;
         xScale = d3.time.scale()
             .range([0, width]);
 
